@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiniela Botellinera 2026-2027</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#ffffff;--surface:#fafafa;--surface2:#f2f2f2;--border:#e2e2e2;
+  --text:#141414;--text2:#5a5a5a;--text3:#9a9a9a;
+  --betis:#00a650;--sevilla:#c8102e;
+  --gold:#c98a00;--silver:#7d8a99;--bronze:#a9612a;
+}
+html{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:15px;line-height:1.6;min-height:100vh}
+body{max-width:720px;margin:0 auto;padding:0 14px 80px}
+h1{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:2px;line-height:1.1}
+h2{font-size:17px;font-weight:600;margin-bottom:10px}
+h3{font-size:14px;font-weight:600;margin-bottom:6px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text);cursor:pointer;font-size:14px;font-weight:500;font-family:'Inter',sans-serif;transition:.15s}
+.btn:hover{border-color:var(--text2)}
+.btn-betis{background:var(--betis);border-color:var(--betis);color:#fff}
+.btn-betis:hover{background:#008f45;border-color:#008f45;color:#fff}
+.btn-sevilla{background:var(--sevilla);border-color:var(--sevilla);color:#fff}
+.btn-sevilla:hover{background:#a50d26;border-color:#a50d26;color:#fff}
+.btn-sm{padding:6px 11px;font-size:13px}
+.btn-ghost{border-color:transparent;color:var(--text2)}
+.btn-ghost:hover{color:var(--text);border-color:var(--border)}
+.btn-danger{border-color:#7f1d1d;color:#ef4444}
+.btn-danger:hover{background:#1c0a0a}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:12px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+input,select{width:100%;padding:8px 11px;border:1px solid var(--border);border-radius:7px;background:var(--surface2);color:var(--text);font-size:14px;font-family:'Inter',sans-serif;transition:.15s}
+input:focus,select:focus{outline:none;border-color:var(--betis);box-shadow:0 0 0 3px rgba(0,166,80,.15)}
+input::placeholder{color:var(--text3)}
+select option{background:#fff;color:var(--text)}
+label{display:block;font-size:11px;font-weight:600;color:var(--text2);margin-bottom:4px;letter-spacing:.4px;text-transform:uppercase}
+.form-group{margin-bottom:12px}
+.tab-bar{display:flex;gap:2px;overflow-x:auto;border-bottom:1px solid var(--border);margin-bottom:14px;scrollbar-width:none}
+.tab-bar::-webkit-scrollbar{display:none}
+.tab{padding:8px 13px;font-size:13px;font-weight:500;cursor:pointer;border:none;background:none;color:var(--text2);white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-1px;transition:.15s;font-family:'Inter',sans-serif}
+.tab:hover{color:var(--text)}
+.tab.active.betis{color:var(--betis);border-bottom-color:var(--betis)}
+.tab.active.sevilla{color:var(--sevilla);border-bottom-color:var(--sevilla)}
+.tab.active{color:var(--text);border-bottom-color:var(--text)}
+
+/* MATCH ROW */
+.match-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)}
+.match-row:last-child{border-bottom:none}
+.match-info{display:flex;flex-direction:column;gap:1px}
+.match-name{font-size:13px;color:var(--text)}
+.match-meta{font-size:11px;color:var(--text3)}
+.radio-group{display:flex;gap:4px}
+.radio-btn{width:34px;height:29px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);border-radius:6px;cursor:pointer;font-size:13px;font-weight:700;background:transparent;color:var(--text3);transition:.15s;font-family:'Inter',sans-serif}
+.radio-btn:hover{border-color:var(--text2);color:var(--text)}
+.radio-btn.sel{background:var(--surface2);border-color:var(--text2);color:var(--text)}
+.radio-btn.sel.betis{background:var(--betis);border-color:var(--betis);color:#fff}
+.radio-btn.sel.sevilla{background:var(--sevilla);border-color:var(--sevilla);color:#fff}
+.radio-btn.correct{background:#16a34a;border-color:#16a34a;color:#fff}
+.radio-btn.wrong{background:#fde2e2;border-color:#ef4444;color:#b91c1c}
+.radio-btn.pending{background:#fef3c7;border-color:#f59e0b;color:#92400e}
+.match-stats{display:none;padding:6px 0 8px;border-bottom:1px solid var(--border)}
+.match-stats.open{display:block}
+.stat-bar-row{display:flex;align-items:center;gap:6px;margin-bottom:4px;font-size:12px}
+.stat-bar-bg{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.stat-lbl{width:12px;font-weight:700;color:var(--text2)}
+.stat-count{width:60px;color:var(--text3);text-align:right}
+
+/* DERBY CARD */
+.derby-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:12px;overflow:hidden}
+.derby-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:linear-gradient(135deg,rgba(200,16,46,.15),rgba(0,166,80,.15));border-bottom:1px solid var(--border)}
+.derby-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px}
+.derby-body{padding:14px 16px}
+.derby-teams{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.derby-team{flex:1;text-align:center;font-weight:700;font-size:14px}
+.derby-team.sev{color:var(--sevilla)}
+.derby-team.bet{color:var(--betis)}
+.derby-vs{color:var(--text3);font-weight:600}
+
+/* HERO */
+.hero{padding:20px 0 16px;margin-bottom:18px;border-bottom:1px solid var(--border)}
+.hero-stripe{height:4px;background:linear-gradient(90deg,var(--sevilla) 50%,var(--betis) 50%);border-radius:2px;margin-bottom:16px}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between}
+.hero-sub{color:var(--text2);font-size:13px;margin-top:4px}
+
+/* RANKING */
+.rank-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px}
+.rank-row:hover{background:var(--surface2)}
+.rank-num{font-size:16px;font-weight:700;width:26px;text-align:center;color:var(--text3);font-family:'Bebas Neue',sans-serif}
+.rank-num.gold{color:var(--gold)}.rank-num.silver{color:var(--silver)}.rank-num.bronze{color:var(--bronze)}
+.rank-name{flex:1;font-weight:500}
+.rank-name.betis{color:var(--betis)}
+.rank-name.sevilla{color:var(--sevilla)}
+.rank-pts{font-size:20px;font-weight:700;color:var(--text);font-family:'Bebas Neue',sans-serif}
+.progress-bar{height:3px;background:var(--border);border-radius:2px;margin-top:3px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--sevilla),var(--betis));border-radius:2px}
+.top3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:18px}
+.top3-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 8px;text-align:center}
+.top3-card.first{border-color:var(--gold)}
+.top3-card .medal{font-size:22px;margin-bottom:3px}
+.top3-card .pname{font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.top3-card .ppts{font-size:22px;font-weight:700;color:var(--text);font-family:'Bebas Neue',sans-serif}
+.pos-change{font-size:11px;font-weight:700;width:28px;text-align:center;flex-shrink:0}
+.pos-change.up{color:#15803d}.pos-change.down{color:#dc2626}.pos-change.same{color:var(--text3)}
+
+/* STATUS */
+.tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:12px;font-weight:500}
+.tag-green{background:rgba(22,163,74,.12);color:#15803d}
+.tag-amber{background:rgba(245,158,11,.15);color:var(--gold)}
+.tag-betis{background:rgba(0,166,80,.15);color:var(--betis)}
+.tag-sevilla{background:rgba(200,16,46,.15);color:var(--sevilla)}
+.status-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)}
+.status-row:last-child{border-bottom:none}
+.msg-ok{background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.3);color:#15803d;border-radius:8px;padding:10px 14px;font-size:13px;margin-top:10px}
+.msg-err{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.3);color:#b91c1c;border-radius:8px;padding:10px 14px;font-size:13px;margin-top:8px}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);margin-bottom:16px}
+.nav-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px}
+.admin-badge{background:rgba(245,158,11,.15);color:var(--gold);font-size:11px;padding:2px 8px;border-radius:12px;font-weight:600}
+.count-pill{background:var(--surface2);color:var(--text2);border-radius:20px;font-size:12px;font-weight:500;padding:3px 10px}
+.sticky-tabs{position:sticky;top:0;background:var(--bg);z-index:10;padding:6px 0 0}
+.divider{height:1px;background:var(--border);margin:14px 0}
+.lock-banner{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);color:var(--gold);border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:14px}
+.section-label{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:1px;color:var(--text2);padding:8px 0 4px;border-top:1px solid var(--border);margin-top:8px}
+input.correct,select.correct{border-color:#16a34a;color:#15803d;background:rgba(22,163,74,.07)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+// ── CALENDARIOS ──
+const PARTIDOS_BETIS=[
+  {j:1,fecha:'25/08/2026',local:'Valencia CF',visitante:'Real Betis',sede:'Mestalla'},
+  {j:2,fecha:'21/08/2026',local:'Real Betis',visitante:'Real Sociedad',sede:'Benito Villamarín'},
+  {j:3,fecha:'29/08/2026',local:'Levante UD',visitante:'Real Betis',sede:'Ciudad de Valencia'},
+  {j:4,fecha:'06/09/2026',local:'Real Betis',visitante:'Real Madrid',sede:'Benito Villamarín'},
+  {j:5,fecha:'13/09/2026',local:'Villarreal CF',visitante:'Real Betis',sede:'Est. de la Cerámica'},
+  {j:6,fecha:'16/09/2026',local:'Real Betis',visitante:'Getafe CF',sede:'Benito Villamarín'},
+  {j:7,fecha:'20/09/2026',local:'R.C. Deportivo',visitante:'Real Betis',sede:'ABANCA-RIAZOR'},
+  {j:8,fecha:'11/10/2026',local:'Real Betis',visitante:'C.A. Osasuna',sede:'Benito Villamarín'},
+  {j:9,fecha:'18/10/2026',local:'Real Betis',visitante:'F.C. Barcelona',sede:'Benito Villamarín'},
+  {j:10,fecha:'25/10/2026',local:'R.C. Celta de Vigo',visitante:'Real Betis',sede:'Abanca Balaídos'},
+  {j:11,fecha:'01/11/2026',local:'Real Betis',visitante:'Málaga C.F.',sede:'Benito Villamarín'},
+  {j:12,fecha:'08/11/2026',local:'Elche C.F.',visitante:'Real Betis',sede:'Martínez Valero'},
+  {j:13,fecha:'22/11/2026',local:'Sevilla F.C.',visitante:'Real Betis',sede:'Ramón Sánchez-Pizjuán',derby:true},
+  {j:14,fecha:'29/11/2026',local:'Real Betis',visitante:'Rayo Vallecano',sede:'Benito Villamarín'},
+  {j:15,fecha:'06/12/2026',local:'Atlético de Madrid',visitante:'Real Betis',sede:'Riyadh Air Metropolitano'},
+  {j:16,fecha:'13/12/2026',local:'Real Betis',visitante:'Real Racing Club',sede:'Benito Villamarín'},
+  {j:17,fecha:'20/12/2026',local:'Athletic Club',visitante:'Real Betis',sede:'San Mamés'},
+  {j:18,fecha:'03/01/2027',local:'Real Betis',visitante:'Deportivo Alavés',sede:'Benito Villamarín'},
+  {j:19,fecha:'10/01/2027',local:'R.C.D. Espanyol',visitante:'Real Betis',sede:'RCDE Stadium'},
+  {j:20,fecha:'17/01/2027',local:'Real Betis',visitante:'R.C. Deportivo',sede:'Benito Villamarín'},
+  {j:21,fecha:'24/01/2027',local:'Real Madrid',visitante:'Real Betis',sede:'Santiago Bernabéu'},
+  {j:22,fecha:'31/01/2027',local:'Real Betis',visitante:'Elche C.F.',sede:'Benito Villamarín'},
+  {j:23,fecha:'07/02/2027',local:'Real Betis',visitante:'Sevilla F.C.',sede:'Benito Villamarín',derby:true},
+  {j:24,fecha:'14/02/2027',local:'Real Sociedad',visitante:'Real Betis',sede:'Reale Arena'},
+  {j:25,fecha:'21/02/2027',local:'Málaga C.F.',visitante:'Real Betis',sede:'La Rosaleda'},
+  {j:26,fecha:'28/02/2027',local:'Real Betis',visitante:'Villarreal CF',sede:'Benito Villamarín'},
+  {j:27,fecha:'07/03/2027',local:'F.C. Barcelona',visitante:'Real Betis',sede:'Spotify Camp Nou'},
+  {j:28,fecha:'14/03/2027',local:'Real Betis',visitante:'Levante UD',sede:'Benito Villamarín'},
+  {j:29,fecha:'21/03/2027',local:'Real Racing Club',visitante:'Real Betis',sede:'El Sardinero'},
+  {j:30,fecha:'04/04/2027',local:'Real Betis',visitante:'R.C. Celta de Vigo',sede:'Benito Villamarín'},
+  {j:31,fecha:'11/04/2027',local:'Deportivo Alavés',visitante:'Real Betis',sede:'Mendizorroza'},
+  {j:32,fecha:'18/04/2027',local:'Real Betis',visitante:'Athletic Club',sede:'Benito Villamarín'},
+  {j:33,fecha:'21/04/2027',local:'Getafe CF',visitante:'Real Betis',sede:'Coliseum'},
+  {j:34,fecha:'02/05/2027',local:'Real Betis',visitante:'Valencia CF',sede:'Benito Villamarín'},
+  {j:35,fecha:'09/05/2027',local:'Real Betis',visitante:'R.C.D. Espanyol',sede:'Benito Villamarín'},
+  {j:36,fecha:'16/05/2027',local:'C.A. Osasuna',visitante:'Real Betis',sede:'El Sadar'},
+  {j:37,fecha:'23/05/2027',local:'Rayo Vallecano',visitante:'Real Betis',sede:'Vallecas'},
+  {j:38,fecha:'30/05/2027',local:'Real Betis',visitante:'Atlético de Madrid',sede:'Benito Villamarín'},
+];
+const PARTIDOS_SEVILLA=[
+  {j:1,fecha:'23/08/2026',local:'Sevilla F.C.',visitante:'Athletic Club',sede:'Ramón Sánchez-Pizjuán'},
+  {j:2,fecha:'30/08/2026',local:'F.C. Barcelona',visitante:'Sevilla F.C.',sede:'Spotify Camp Nou'},
+  {j:3,fecha:'06/09/2026',local:'Sevilla F.C.',visitante:'R.C.D. Espanyol',sede:'Ramón Sánchez-Pizjuán'},
+  {j:4,fecha:'13/09/2026',local:'Real Sociedad',visitante:'Sevilla F.C.',sede:'Reale Arena'},
+  {j:5,fecha:'20/09/2026',local:'Sevilla F.C.',visitante:'Elche C.F.',sede:'Ramón Sánchez-Pizjuán'},
+  {j:6,fecha:'23/09/2026',local:'Villarreal CF',visitante:'Sevilla F.C.',sede:'Est. de la Cerámica'},
+  {j:7,fecha:'27/09/2026',local:'Sevilla F.C.',visitante:'Getafe CF',sede:'Ramón Sánchez-Pizjuán'},
+  {j:8,fecha:'04/10/2026',local:'R.C. Celta de Vigo',visitante:'Sevilla F.C.',sede:'Abanca Balaídos'},
+  {j:9,fecha:'18/10/2026',local:'Sevilla F.C.',visitante:'Real Madrid',sede:'Ramón Sánchez-Pizjuán'},
+  {j:10,fecha:'25/10/2026',local:'Atlético de Madrid',visitante:'Sevilla F.C.',sede:'Riyadh Air Metropolitano'},
+  {j:11,fecha:'01/11/2026',local:'Sevilla F.C.',visitante:'C.A. Osasuna',sede:'Ramón Sánchez-Pizjuán'},
+  {j:12,fecha:'08/11/2026',local:'Levante UD',visitante:'Sevilla F.C.',sede:'Ciudad de Valencia'},
+  {j:13,fecha:'22/11/2026',local:'Sevilla F.C.',visitante:'Real Betis',sede:'Ramón Sánchez-Pizjuán',derby:true},
+  {j:14,fecha:'29/11/2026',local:'Valencia CF',visitante:'Sevilla F.C.',sede:'Mestalla'},
+  {j:15,fecha:'06/12/2026',local:'Sevilla F.C.',visitante:'Málaga C.F.',sede:'Ramón Sánchez-Pizjuán'},
+  {j:16,fecha:'13/12/2026',local:'R.C. Deportivo',visitante:'Sevilla F.C.',sede:'ABANCA-RIAZOR'},
+  {j:17,fecha:'20/12/2026',local:'Sevilla F.C.',visitante:'Rayo Vallecano',sede:'Ramón Sánchez-Pizjuán'},
+  {j:18,fecha:'03/01/2027',local:'Real Racing Club',visitante:'Sevilla F.C.',sede:'El Sardinero'},
+  {j:19,fecha:'10/01/2027',local:'Sevilla F.C.',visitante:'Deportivo Alavés',sede:'Ramón Sánchez-Pizjuán'},
+  {j:20,fecha:'17/01/2027',local:'Athletic Club',visitante:'Sevilla F.C.',sede:'San Mamés'},
+  {j:21,fecha:'24/01/2027',local:'Sevilla F.C.',visitante:'F.C. Barcelona',sede:'Ramón Sánchez-Pizjuán'},
+  {j:22,fecha:'31/01/2027',local:'R.C.D. Espanyol',visitante:'Sevilla F.C.',sede:'RCDE Stadium'},
+  {j:23,fecha:'07/02/2027',local:'Real Betis',visitante:'Sevilla F.C.',sede:'Benito Villamarín',derby:true},
+  {j:24,fecha:'14/02/2027',local:'Sevilla F.C.',visitante:'Real Sociedad',sede:'Ramón Sánchez-Pizjuán'},
+  {j:25,fecha:'21/02/2027',local:'Elche C.F.',visitante:'Sevilla F.C.',sede:'Martínez Valero'},
+  {j:26,fecha:'28/02/2027',local:'Sevilla F.C.',visitante:'Villarreal CF',sede:'Ramón Sánchez-Pizjuán'},
+  {j:27,fecha:'07/03/2027',local:'Getafe CF',visitante:'Sevilla F.C.',sede:'Coliseum'},
+  {j:28,fecha:'14/03/2027',local:'Sevilla F.C.',visitante:'R.C. Celta de Vigo',sede:'Ramón Sánchez-Pizjuán'},
+  {j:29,fecha:'21/03/2027',local:'Real Madrid',visitante:'Sevilla F.C.',sede:'Santiago Bernabéu'},
+  {j:30,fecha:'04/04/2027',local:'Sevilla F.C.',visitante:'Atlético de Madrid',sede:'Ramón Sánchez-Pizjuán'},
+  {j:31,fecha:'11/04/2027',local:'C.A. Osasuna',visitante:'Sevilla F.C.',sede:'El Sadar'},
+  {j:32,fecha:'18/04/2027',local:'Sevilla F.C.',visitante:'Levante UD',sede:'Ramón Sánchez-Pizjuán'},
+  {j:33,fecha:'21/04/2027',local:'Valencia CF',visitante:'Sevilla F.C.',sede:'Mestalla'},
+  {j:34,fecha:'02/05/2027',local:'Málaga C.F.',visitante:'Sevilla F.C.',sede:'La Rosaleda'},
+  {j:35,fecha:'09/05/2027',local:'Sevilla F.C.',visitante:'R.C. Deportivo',sede:'Ramón Sánchez-Pizjuán'},
+  {j:36,fecha:'16/05/2027',local:'Rayo Vallecano',visitante:'Sevilla F.C.',sede:'Vallecas'},
+  {j:37,fecha:'23/05/2027',local:'Sevilla F.C.',visitante:'Real Racing Club',sede:'Ramón Sánchez-Pizjuán'},
+  {j:38,fecha:'30/05/2027',local:'Deportivo Alavés',visitante:'Sevilla F.C.',sede:'Mendizorroza'},
+];
+
+// Derby indices (0-based)
+const DERBY_B13=12; // Betis jornada 13 (Sevilla-Betis)
+const DERBY_B23=22; // Betis jornada 23 (Betis-Sevilla)
+const DERBY_S13=12; // Sevilla jornada 13
+const DERBY_S23=22; // Sevilla jornada 23
+
+const ADMIN_PASS='derbi2027';
+
+let S={page:'home',user:null,participants:{},results:{},payments:{},bonus:{},snapshot:[],jugadores:{betis:[],sevilla:[]},meta:{cuota:10,locked:false}};
+let RO=false,viewUid=null,qtab='betis',rankTab='rank';
+
+function isLocked(){return !!(S.meta&&S.meta.locked);}
+
+async function ld(){
+  try{
+    const res=await fetch('/api/data');
+    if(res.ok){
+      const d=await res.json();
+      S.participants=d.participants||{};
+      S.results=d.results||{};
+      S.payments=d.payments||{};
+      S.bonus=d.bonus||{};
+      S.snapshot=d.snapshot||[];
+      S.jugadores=d.results?.jugadores||{betis:[],sevilla:[]};
+      S.meta=d.meta||{cuota:10,locked:false};
+    }
+  }catch(e){console.error('Error loading:',e);}
+}
+
+// ── PUNTOS ──
+function calcPts(uid){
+  const p=S.participants[uid],r=S.results;
+  if(!p) return 0;
+  let pts=0;
+  // Betis partidos normales (3pts)
+  PARTIDOS_BETIS.forEach((_,i)=>{
+    if(i===DERBY_B13||i===DERBY_B23) return; // derbis aparte
+    if(p.betis?.[i]&&r.betis?.[i]&&p.betis[i]===r.betis[i]) pts+=3;
+  });
+  // Sevilla partidos normales (3pts)
+  PARTIDOS_SEVILLA.forEach((_,i)=>{
+    if(i===DERBY_S13||i===DERBY_S23) return;
+    if(p.sevilla?.[i]&&r.sevilla?.[i]&&p.sevilla[i]===r.sevilla[i]) pts+=3;
+  });
+  // Derbis
+  ['d1','d2'].forEach(dk=>{
+    const pd=p.derbis?.[dk],rd=r.derbis?.[dk];
+    if(!pd||!rd) return;
+    if(pd.signo&&rd.signo&&pd.signo===rd.signo) pts+=3;
+    if(pd.resultado&&rd.resultado&&pd.resultado===rd.resultado) pts+=3;
+    // minuto primer gol
+    if(pd.minuto&&rd.minuto){
+      const pm=parseInt(pd.minuto),rm=parseInt(rd.minuto);
+      if(!isNaN(pm)&&!isNaN(rm)&&pm<=rm){
+        // check if this participant is among the closest without passing
+        const allMins=Object.values(S.participants)
+          .map(x=>parseInt(x.derbis?.[dk]?.minuto))
+          .filter(m=>!isNaN(m)&&m<=rm);
+        if(allMins.length>0){
+          const best=Math.max(...allMins);
+          if(pm===best) pts+=5;
+        }
+      }
+    }
+  });
+  // Pichichi
+  if(p.pich_betis&&r.pich_betis&&p.pich_betis.trim().toLowerCase()===r.pich_betis.trim().toLowerCase()) pts+=10;
+  if(p.pich_sevilla&&r.pich_sevilla&&p.pich_sevilla.trim().toLowerCase()===r.pich_sevilla.trim().toLowerCase()) pts+=10;
+  // Bonus
+  pts+=parseInt(S.bonus?.[uid]||0);
+  return pts;
+}
+
+function getRank(){
+  return Object.keys(S.participants)
+    .map(uid=>({uid,nombre:S.participants[uid].nombre,equipo:S.participants[uid].equipo||'',pts:calcPts(uid)}))
+    .sort((a,b)=>b.pts-a.pts);
+}
+
+// ── RENDER ──
+const app=document.getElementById('app');
+function render(){app.innerHTML='';({home:renderHome,register:renderReg,quiniela:renderQ,ranking:renderRank,admin:renderAdmin,admin_results:renderAdminRes,admin_pagos:renderAdminPagos,admin_ver:renderAdminVer}[S.page]||renderHome)();}
+function go(p){RO=false;S.page=p;render();}
+
+// ── HOME ──
+function renderHome(){
+  const rank=getRank(),top3=rank.slice(0,3),n=Object.keys(S.participants).length;
+  // Próximo derby
+  const now=new Date();
+  let h=`<div class="hero">
+    <div class="hero-stripe"></div>
+    <div class="hero-top">
+      <div>
+        <h1>⚽ Quiniela Botellinera</h1>
+        <p class="hero-sub">Temporada 2026-2027 · Liga Española · ${n} participante${n!==1?'s':''}</p>
+      </div>
+      <button class="btn btn-sm btn-ghost" onclick="gotoAdmin()">🔐</button>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:22px">
+    <button class="btn btn-betis" style="flex:1" onclick="go('register')">+ Mi quiniela</button>
+    <button class="btn btn-sevilla" style="flex:1" onclick="go('ranking')">🏆 Clasificación</button>
+  </div>`;
+
+  // Progreso de temporada
+  const prog=getProgreso();
+  if(prog.jugados>0){
+    h+=`<div class="card" style="padding:12px 16px;margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+        <span style="font-weight:600;font-size:14px">Jornada ${prog.jornada} de 38</span>
+        <span style="font-size:12px;color:var(--text2)">${prog.jugados}/${prog.total} pronósticos resueltos</span>
+      </div>
+      <div style="height:8px;background:var(--border);border-radius:4px;overflow:hidden">
+        <div style="width:${prog.pct}%;height:100%;background:linear-gradient(90deg,var(--sevilla),var(--betis));border-radius:4px;transition:width .4s"></div>
+      </div>
+    </div>`;
+  }
+
+  // Duelo Team Betis vs Team Sevilla
+  const duelo=getDuelo();
+  if(duelo.betis.n>0||duelo.sevilla.n>0){
+    const maxMedia=Math.max(duelo.betis.media,duelo.sevilla.media,1);
+    const gana=duelo.betis.media>duelo.sevilla.media?'betis':duelo.sevilla.media>duelo.betis.media?'sevilla':'';
+    h+=`<div class="card" style="padding:0;overflow:hidden;margin-bottom:12px">
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 16px;background:linear-gradient(90deg,rgba(0,166,80,.12),rgba(200,16,46,.12));border-bottom:1px solid var(--border)">
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:1px">Team Betis vs Team Sevilla</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;padding:14px 16px">
+        <div style="text-align:center">
+          <div style="font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px">🟢 Betis</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--betis);line-height:1.1">${duelo.betis.media}</div>
+          <div style="font-size:11px;color:var(--text3)">media · ${duelo.betis.n} jugador${duelo.betis.n!==1?'es':''}</div>
+        </div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--text3)">VS</div>
+        <div style="text-align:center">
+          <div style="font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px">🔴 Sevilla</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--sevilla);line-height:1.1">${duelo.sevilla.media}</div>
+          <div style="font-size:11px;color:var(--text3)">media · ${duelo.sevilla.n} jugador${duelo.sevilla.n!==1?'es':''}</div>
+        </div>
+      </div>
+      <div style="display:flex;height:6px">
+        <div style="width:${Math.round(duelo.betis.media/maxMedia*50)}%;background:var(--betis)"></div>
+        <div style="flex:1;background:var(--border)"></div>
+        <div style="width:${Math.round(duelo.sevilla.media/maxMedia*50)}%;background:var(--sevilla)"></div>
+      </div>
+      ${gana?`<div style="text-align:center;padding:8px;font-size:12px;color:var(--${gana})">Van por delante los ${gana==='betis'?'béticos':'sevillistas'}</div>`:'<div style="text-align:center;padding:8px;font-size:12px;color:var(--text3)">Empate técnico</div>'}
+    </div>`;
+  }
+
+  if(n>0){
+    h+=`<h2>Top 3</h2><div class="top3">
+    ${top3.map((p,i)=>`<div class="top3-card${i===0?' first':''}">
+      <div class="medal">${['🥇','🥈','🥉'][i]}</div>
+      <div class="pname ${p.equipo||''}" style="${p.equipo?`color:var(--${p.equipo})`:''}">${p.nombre}</div>
+      <div class="ppts">${p.pts}</div>
+    </div>`).join('')}
+    </div>
+    <a href="#" onclick="go('ranking');return false" style="display:block;text-align:center;color:var(--text2);font-size:13px;text-decoration:none;margin-top:-6px;margin-bottom:16px">Ver ranking completo →</a>`;
+  } else {
+    h+=`<div class="card" style="text-align:center;padding:28px"><div style="font-size:36px;margin-bottom:8px">⚽</div><p style="color:var(--text2);font-size:14px">¡Sé el primero en registrar tu quiniela!</p></div>`;
+  }
+
+  h+=`<div class="divider"></div>
+  <div class="card" style="font-size:13px;color:var(--text2);line-height:2;padding:12px 16px">
+    <span style="font-weight:600;color:var(--text)">Puntuación: </span>
+    Partidos <b>3 pts</b>/acierto · Derby signo <b>3 pts</b> + resultado exacto <b>+3 pts</b> + minuto 1er gol <b>+5 pts</b> · Pichichi <b>10 pts</b> c/u
+  </div>
+  <div class="card" style="font-size:13px;line-height:2;padding:12px 16px;background:rgba(245,158,11,.05);border-color:rgba(245,158,11,.2)">
+    <span style="font-weight:600;color:var(--gold)">Premios: </span>
+    <span style="color:var(--text2)">🥇 30% · 🥈 20% · 🥉 10% · ❄️ Campeón de invierno 10% · 🏛️ Asociación 30%</span>
+  </div>`;
+  app.innerHTML=h;
+}
+function gotoAdmin(){const p=prompt('Contraseña:');if(p===ADMIN_PASS){S.page='admin';render();}else if(p!==null)alert('Contraseña incorrecta.');}
+
+// ── REGISTER ──
+function renderReg(){
+  app.innerHTML=`<div class="nav">
+    <button class="btn btn-sm btn-ghost" onclick="go('home')">← Volver</button>
+    <span class="nav-title">Mi quiniela</span><span></span></div>
+  <div class="card">
+    <div class="form-group"><label>Nombre completo</label><input id="rn" placeholder="Ej: Juan García"/></div>
+    <div class="form-group"><label>Email (identificador único)</label><input id="re" type="email" placeholder="tu@email.com"/></div>
+    <div class="form-group"><label>¿De qué equipo eres?</label>
+      <div style="display:flex;gap:8px">
+        <button type="button" id="eq-betis" class="btn" style="flex:1" onclick="pickEquipo('betis')">🟢 Betis</button>
+        <button type="button" id="eq-sevilla" class="btn" style="flex:1" onclick="pickEquipo('sevilla')">🔴 Sevilla</button>
+      </div>
+    </div>
+    <button class="btn btn-betis" style="width:100%" onclick="checkReg()">Continuar →</button>
+    <div id="rerr"></div>
+  </div>
+  <p style="font-size:13px;color:var(--text2);text-align:center;margin-top:8px">Si ya tienes quiniela, usa el mismo email para editarla.</p>`;
+}
+let regEquipo='';
+function pickEquipo(eq){
+  regEquipo=eq;
+  const b=document.getElementById('eq-betis'),s=document.getElementById('eq-sevilla');
+  if(b) b.className='btn'+(eq==='betis'?' btn-betis':'');
+  if(s) s.className='btn'+(eq==='sevilla'?' btn-sevilla':'');
+}
+function checkReg(){
+  const n=document.getElementById('rn').value.trim();
+  const e=document.getElementById('re').value.trim().toLowerCase();
+  if(!n||!e||!e.includes('@')){document.getElementById('rerr').innerHTML='<p class="msg-err">Rellena nombre y email válido.</p>';return;}
+  const existente=S.participants[e];
+  if(!regEquipo&&!existente?.equipo){document.getElementById('rerr').innerHTML='<p class="msg-err">Elige de qué equipo eres.</p>';return;}
+  if(isLocked()&&!existente){document.getElementById('rerr').innerHTML='<p class="msg-err">🔒 Las quinielas están cerradas.</p>';return;}
+  S.user=e;
+  if(!existente) S.participants[e]={nombre:n,email:e,equipo:regEquipo,betis:{},sevilla:{},derbis:{d1:{signo:'',resultado:'',minuto:''},d2:{signo:'',resultado:'',minuto:''}},pich_betis:'',pich_sevilla:''};
+  else {S.participants[e].nombre=n;if(regEquipo)S.participants[e].equipo=regEquipo;}
+  qtab='betis';S.page='quiniela';render();
+}
+
+// ── QUINIELA ──
+function renderQ(){
+  const p=S.participants[S.user];
+  const lk=isLocked();
+  RO=lk;
+  if(lk&&qtab==='save') qtab='betis';
+  const tabs=[
+    {id:'betis',l:'🟢 Betis'},
+    {id:'sevilla',l:'🔴 Sevilla'},
+    {id:'derbis',l:'⚔️ Derbis'},
+    {id:'pichi',l:'🥇 Pichichi'},
+  ];
+  if(!lk) tabs.push({id:'save',l:'✓ Guardar'});
+  let h=`<div class="nav">
+    <button class="btn btn-sm btn-ghost" onclick="go('home')">← Inicio</button>
+    <span class="nav-title">${p.nombre}</span><span></span></div>`;
+  if(lk) h+=`<div class="lock-banner">🔒 Quinielas cerradas. Solo consulta. Los aciertos aparecen en verde.</div>`;
+  if(lk){
+    // desglose puntos
+    const d=calcPtsDetalle(S.user);
+    const desglose=[
+      ['Betis',d.betis,'3pts'],
+      ['Sevilla',d.sevilla,'3pts'],
+      ['Derby 1',d.d1,'6+5pts'],
+      ['Derby 2',d.d2,'6+5pts'],
+      ['Pichichi',d.pichi,'10pts'],
+      ...(d.bonus!==0?[['Bonus',d.bonus,'']]:[]),
+    ].filter(([,v])=>v!==0);
+    if(desglose.length>0){
+      h+=`<div class="card" style="padding:10px 14px;margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <span style="font-size:12px;color:var(--text2);font-weight:600">DESGLOSE DE PUNTOS</span>
+          <b style="color:var(--text);font-size:20px;font-family:'Bebas Neue',sans-serif">${d.total} pts</b>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:4px">
+          ${desglose.map(([l,v,sub])=>`<div style="background:var(--surface2);border-radius:6px;padding:5px 8px">
+            <div style="font-size:10px;color:var(--text3)">${l}</div>
+            <div style="font-size:15px;font-weight:700;color:var(--text);font-family:'Bebas Neue',sans-serif">${v} pts</div>
+            <div style="font-size:10px;color:var(--text3)">${sub}</div>
+          </div>`).join('')}
+        </div>
+      </div>`;
+    }
+  }
+  h+=`<div class="sticky-tabs"><div class="tab-bar">
+  ${tabs.map(t=>`<button class="tab${qtab===t.id?(' active '+(t.id==='betis'?'betis':t.id==='sevilla'?'sevilla':'')):''}" onclick="setQtab('${t.id}')">${t.l}</button>`).join('')}
+  </div></div>`;
+  if(qtab==='betis') h+=buildPartidos('betis',p);
+  else if(qtab==='sevilla') h+=buildPartidos('sevilla',p);
+  else if(qtab==='derbis') h+=buildDerbis(p);
+  else if(qtab==='pichi') h+=buildPichi(p);
+  else if(qtab==='save') h+=buildSave(p);
+  app.innerHTML=h;
+}
+function setQtab(t){qtab=t;if(S.page==='admin_ver')renderAdminVer();else renderQ();}
+
+// ── PARTIDOS ──
+function buildPartidos(equipo,p,isAdmin){
+  const partidos=equipo==='betis'?PARTIDOS_BETIS:PARTIDOS_SEVILLA;
+  const color=equipo==='betis'?'betis':'sevilla';
+  const pronosticos=isAdmin?(S.results[equipo]||{}):(p[equipo]||{});
+  const reales=S.results[equipo]||{};
+  const showGreen=!isAdmin&&RO&&isLocked();
+  const ro=!isAdmin&&RO;
+  let h=`<div class="card" style="padding:14px 16px">`;
+  if(!ro&&!isAdmin) h+=`<p style="font-size:13px;color:var(--text2);margin-bottom:10px">3 pts por acierto · Los derbis (J13 y J23) están en la pestaña <b>⚔️ Derbis</b></p>`;
+
+  partidos.forEach((m,i)=>{
+    if(m.derby) return; // derbis en otra pestaña
+    const v=pronosticos[i]||'';
+    const rv=reales[i]||'';
+    const hasResult=!!rv;
+    const correct=showGreen&&!!v&&hasResult&&v===rv;
+    const wrong=showGreen&&!!v&&hasResult&&v!==rv;
+    const pending=showGreen&&!!v&&!hasResult;
+    const fn=isAdmin?`setAdminPartido('${equipo}',${i},`:`setPartido('${equipo}',${i},`;
+    const click=val=>ro?'':`${fn}'${val}')`;
+    const cls=val=>{
+      if(v!==val) return 'radio-btn';
+      if(correct) return 'radio-btn correct';
+      if(wrong) return 'radio-btn wrong';
+      if(pending) return 'radio-btn pending';
+      return `radio-btn sel ${color}`;
+    };
+    const votos={1:0,X:0,2:0};
+    if(!isAdmin) Object.values(S.participants).forEach(pp=>{const vv=pp[equipo]?.[i];if(vv)votos[vv]++;});
+    const total=votos[1]+votos.X+votos[2]||1;
+    const pct=n=>Math.round(n/total*100);
+    const isEsLocal=m.local==='Sevilla F.C.'||m.local==='Real Betis';
+    h+=`<div class="match-row" onclick="toggleStats('ms_${equipo}_${i}')" style="cursor:pointer">
+      <div class="match-info">
+        <span class="match-name">${m.local} — ${m.visitante} <span style="font-size:10px;color:var(--text3)">▾</span></span>
+        <span class="match-meta">J${m.j} · ${m.fecha}</span>
+      </div>
+      <div class="radio-group">
+        <button class="${cls('1')}" onclick="event.stopPropagation();${click('1')}" data-e="${equipo}" data-i="${i}" data-v="1">1</button>
+        <button class="${cls('X')}" onclick="event.stopPropagation();${click('X')}" data-e="${equipo}" data-i="${i}" data-v="X">X</button>
+        <button class="${cls('2')}" onclick="event.stopPropagation();${click('2')}" data-e="${equipo}" data-i="${i}" data-v="2">2</button>
+      </div>
+    </div>
+    <div class="match-stats" id="ms_${equipo}_${i}">
+      ${['1','X','2'].map(opt=>`<div class="stat-bar-row">
+        <span class="stat-lbl">${opt}</span>
+        <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:${pct(votos[opt])}%;background:var(--${color})"></div></div>
+        <span class="stat-count">${votos[opt]} (${pct(votos[opt])}%)</span>
+      </div>`).join('')}
+    </div>`;
+  });
+  h+=`</div>`;
+  if(isAdmin) h+=`<button class="btn btn-${color}" style="width:100%;margin-top:4px" onclick="saveR()">💾 Guardar</button><div id="rsm"></div>`;
+  return h;
+}
+
+function toggleStats(id){const el=document.getElementById(id);if(el)el.classList.toggle('open');}
+
+function setPartido(equipo,i,v){
+  if(!S.participants[S.user][equipo]) S.participants[S.user][equipo]={};
+  S.participants[S.user][equipo][i]=v;
+  renderQ();
+}
+function setAdminPartido(equipo,i,v){
+  if(!S.results[equipo]) S.results[equipo]={};
+  const cur=S.results[equipo][i]||'';
+  if(cur===v) delete S.results[equipo][i]; else S.results[equipo][i]=v;
+  renderAdminRes();
+}
+
+// ── DERBIS ──
+function buildDerbis(p,isAdmin){
+  const showGreen=!isAdmin&&RO&&isLocked();
+  const ro=!isAdmin&&RO;
+  const derbis=[
+    {key:'d1',idx:DERBY_B13,equipo:'betis',partido:PARTIDOS_BETIS[DERBY_B13],label:'1er Derbi · Jornada 13'},
+    {key:'d2',idx:DERBY_B23,equipo:'betis',partido:PARTIDOS_BETIS[DERBY_B23],label:'2º Derbi · Jornada 23'},
+  ];
+  let h='';
+  derbis.forEach(({key,partido,label})=>{
+    const pd=isAdmin?(S.results.derbis?.[key]||{}):(p.derbis?.[key]||{});
+    const rd=S.results.derbis?.[key]||{};
+    const signoCorrect=showGreen&&pd.signo&&rd.signo&&pd.signo===rd.signo;
+    const resCorrect=showGreen&&pd.resultado&&rd.resultado&&pd.resultado===rd.resultado;
+    const fn=isAdmin?`setAdminDerby('${key}',`:`setDerby('${key}',`;
+    h+=`<div class="derby-card">
+      <div class="derby-header">
+        <div>
+          <div class="derby-title">⚔️ ${label}</div>
+          <div style="font-size:12px;color:var(--text2)">${partido.fecha} · ${partido.sede}</div>
+        </div>
+        <div style="font-size:11px;color:var(--text3)">hasta <b>6+5 pts</b></div>
+      </div>
+      <div class="derby-body">
+        <div class="derby-teams">
+          <span class="derby-team${partido.local==='Sevilla F.C.'?' sev':' bet'}">${partido.local}</span>
+          <span class="derby-vs">vs</span>
+          <span class="derby-team${partido.visitante==='Sevilla F.C.'?' sev':' bet'}">${partido.visitante}</span>
+        </div>
+        <div class="form-group">
+          <label>Signo (1X2) — 3 pts</label>
+          <div class="radio-group" style="justify-content:center;gap:12px">
+            ${['1','X','2'].map(val=>{
+              const sel=pd.signo===val;
+              return `<button class="radio-btn${sel?(signoCorrect?' correct':' sel sevilla'):''}\"
+                onclick="${ro?'':fn+"'signo','"+val+"')"}" style="width:48px;height:36px;font-size:15px">${val}</button>`;
+            }).join('')}
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Resultado exacto — +3 pts</label>
+          <input class="${resCorrect?'correct':''}" placeholder="Ej: 2-1" value="${pd.resultado||''}"
+            oninput="${ro?'':fn+"'resultado',this.value)"}" ${ro?'readonly':''} style="max-width:120px"/>
+        </div>
+        <div class="form-group">
+          <label>Minuto 1er gol — hasta +5 pts</label>
+          <input type="number" min="1" max="90" step="1" inputmode="numeric" placeholder="Ej: 28" value="${pd.minuto||''}"
+            oninput="this.value=this.value.replace(/[^0-9]/g,'');${ro?'':fn+"'minuto',this.value)"}"
+            onkeydown="if(['.',',','e','E','+','-'].includes(event.key))event.preventDefault()"
+            ${ro?'readonly':''} style="max-width:100px"/>
+          <p style="font-size:11px;color:var(--text3);margin-top:4px">Sin pasarse. Minuto 45 si es en descuento 1ª parte, 90 si es en descuento 2ª.</p>
+        </div>
+      </div>
+    </div>`;
+  });
+  if(isAdmin) h+=`<button class="btn btn-sevilla" style="width:100%;margin-top:4px" onclick="saveR()">💾 Guardar</button><div id="rsm"></div>`;
+  return h;
+}
+
+function setDerby(key,campo,val){
+  if(!S.participants[S.user].derbis) S.participants[S.user].derbis={};
+  if(!S.participants[S.user].derbis[key]) S.participants[S.user].derbis[key]={};
+  S.participants[S.user].derbis[key][campo]=val;
+  if(campo==='signo') renderQ();
+}
+function setAdminDerby(key,campo,val){
+  if(!S.results.derbis) S.results.derbis={};
+  if(!S.results.derbis[key]) S.results.derbis[key]={};
+  S.results.derbis[key][campo]=val;
+  if(campo==='signo') renderAdminRes();
+}
+
+// ── PICHICHI ──
+function buildPichi(p,isAdmin){
+  const showGreen=!isAdmin&&RO&&isLocked();
+  const ro=!isAdmin&&RO;
+  const bCorrect=showGreen&&p.pich_betis&&S.results.pich_betis&&p.pich_betis.trim().toLowerCase()===S.results.pich_betis.trim().toLowerCase();
+  const sCorrect=showGreen&&p.pich_sevilla&&S.results.pich_sevilla&&p.pich_sevilla.trim().toLowerCase()===S.results.pich_sevilla.trim().toLowerCase();
+  const evName=isAdmin?'setAdminPichi':'setPichi';
+  const field=(k,equipo,color,ph,corr)=>{
+    const lista=S.jugadores?.[equipo]||[];
+    const val=p[k]||'';
+    if(lista.length>0){
+      return `<select class="${corr?'correct':''}" ${ro?'disabled':''} onchange="${evName}('${k}',this.value)">
+        <option value="">-- Elige jugador --</option>
+        ${lista.map(j=>`<option value="${j}"${val===j?' selected':''}>${j}</option>`).join('')}
+      </select>`;
+    }
+    return `<input class="${corr?'correct':''}" placeholder="${ph}" value="${val}" oninput="${ro?'':evName+`('${k}',this.value)`}" ${ro?'readonly':''}/>`;
+  };
+  let h=`<div class="card">
+    <h3 style="margin-bottom:12px;color:var(--betis)">🟢 Pichichi Real Betis — <span style="color:var(--text2);font-weight:400">10 pts</span></h3>
+    <div class="form-group"><label>Máximo goleador del Betis en Liga</label>
+    ${field('pich_betis','betis','betis','Ej: Ayoze Pérez',bCorrect)}</div>
+  </div>
+  <div class="card">
+    <h3 style="margin-bottom:12px;color:var(--sevilla)">🔴 Pichichi Sevilla F.C. — <span style="color:var(--text2);font-weight:400">10 pts</span></h3>
+    <div class="form-group"><label>Máximo goleador del Sevilla en Liga</label>
+    ${field('pich_sevilla','sevilla','sevilla','Ej: Isaac Romero',sCorrect)}</div>
+  </div>`;
+  if(isAdmin) h+=`<button class="btn btn-sevilla" style="width:100%;margin-top:4px" onclick="saveR()">💾 Guardar</button><div id="rsm"></div>`;
+  return h;
+}
+function setPichi(k,v){S.participants[S.user][k]=v;}
+function setAdminPichi(k,v){S.results[k]=v;}
+
+
+// ── GUARDAR ──
+function buildSave(p){
+  const bCount=Object.keys(p.betis||{}).length;
+  const sCount=Object.keys(p.sevilla||{}).length;
+  const d1=p.derbis?.d1||{};
+  const d2=p.derbis?.d2||{};
+  return `<div class="card"><h3 style="margin-bottom:14px">Resumen de tu quiniela</h3>
+  ${[
+    ['Partidos Betis (sin derbis)', bCount>=36, `${bCount}/36`],
+    ['Partidos Sevilla (sin derbis)', sCount>=36, `${sCount}/36`],
+    ['Derby 1 — signo', !!d1.signo, d1.signo||'Sin rellenar'],
+    ['Derby 1 — resultado', !!d1.resultado, d1.resultado||'Sin rellenar'],
+    ['Derby 1 — minuto', !!d1.minuto, d1.minuto||'Sin rellenar'],
+    ['Derby 2 — signo', !!d2.signo, d2.signo||'Sin rellenar'],
+    ['Derby 2 — resultado', !!d2.resultado, d2.resultado||'Sin rellenar'],
+    ['Derby 2 — minuto', !!d2.minuto, d2.minuto||'Sin rellenar'],
+    ['Pichichi Betis', !!p.pich_betis, p.pich_betis||'Sin rellenar'],
+    ['Pichichi Sevilla', !!p.pich_sevilla, p.pich_sevilla||'Sin rellenar'],
+  ].map(([l,ok,v])=>`<div class="status-row"><span style="font-size:14px">${l}</span><span class="tag ${ok?'tag-green':'tag-amber'}">${v}</span></div>`).join('')}
+  <div class="divider"></div>
+  <button class="btn btn-betis" style="width:100%;margin-bottom:8px" onclick="guardar()">💾 Guardar quiniela</button>
+  <div id="smsg"></div></div>`;
+}
+
+async function guardar(){
+  const p=S.participants[S.user];
+  const {nombre,email,equipo,betis,sevilla,derbis,pich_betis,pich_sevilla}=p;
+  const data={equipo,betis,sevilla,derbis,pich_betis,pich_sevilla};
+  const el=document.getElementById('smsg');
+  if(el) el.innerHTML='<p class="msg-ok" style="opacity:.6">Guardando...</p>';
+  try{
+    const res=await fetch('/api/participant',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,nombre,data})});
+    if(el) el.innerHTML=res.ok?'<p class="msg-ok">✓ ¡Quiniela guardada!</p>':'<p class="msg-err">Error al guardar.</p>';
+  }catch(e){if(el) el.innerHTML='<p class="msg-err">Error de conexión.</p>';}
+}
+
+// ── CALCPTS DETALLE ──
+function calcPtsDetalle(uid){
+  const p=S.participants[uid],r=S.results;
+  if(!p) return {betis:0,sevilla:0,d1:0,d2:0,pichi:0,bonus:0,total:0};
+  const d={betis:0,sevilla:0,d1:0,d2:0,pichi:0,bonus:0};
+  PARTIDOS_BETIS.forEach((_,i)=>{
+    if(i===DERBY_B13||i===DERBY_B23) return;
+    if(p.betis?.[i]&&r.betis?.[i]&&p.betis[i]===r.betis[i]) d.betis+=3;
+  });
+  PARTIDOS_SEVILLA.forEach((_,i)=>{
+    if(i===DERBY_S13||i===DERBY_S23) return;
+    if(p.sevilla?.[i]&&r.sevilla?.[i]&&p.sevilla[i]===r.sevilla[i]) d.sevilla+=3;
+  });
+  ['d1','d2'].forEach(dk=>{
+    const pd=p.derbis?.[dk],rd=r.derbis?.[dk];
+    if(!pd||!rd) return;
+    if(pd.signo&&rd.signo&&pd.signo===rd.signo) d[dk]+=3;
+    if(pd.resultado&&rd.resultado&&pd.resultado===rd.resultado) d[dk]+=3;
+    if(pd.minuto&&rd.minuto){
+      const pm=parseInt(pd.minuto),rm=parseInt(rd.minuto);
+      if(!isNaN(pm)&&!isNaN(rm)&&pm<=rm){
+        const allMins=Object.values(S.participants).map(x=>parseInt(x.derbis?.[dk]?.minuto)).filter(m=>!isNaN(m)&&m<=rm);
+        if(allMins.length>0&&pm===Math.max(...allMins)) d[dk]+=5;
+      }
+    }
+  });
+  if(p.pich_betis&&r.pich_betis&&p.pich_betis.trim().toLowerCase()===r.pich_betis.trim().toLowerCase()) d.pichi+=10;
+  if(p.pich_sevilla&&r.pich_sevilla&&p.pich_sevilla.trim().toLowerCase()===r.pich_sevilla.trim().toLowerCase()) d.pichi+=10;
+  d.bonus=parseInt(S.bonus?.[uid]||0);
+  d.total=d.betis+d.sevilla+d.d1+d.d2+d.pichi+d.bonus;
+  return d;
+}
+
+// ── ESTADISTICAS ──
+function getProgreso(){
+  const rb=S.results.betis||{},rs=S.results.sevilla||{},rd=S.results.derbis||{};
+  let jugados=0;
+  PARTIDOS_BETIS.forEach((m,i)=>{if(i!==DERBY_B13&&i!==DERBY_B23&&rb[i])jugados++;});
+  PARTIDOS_SEVILLA.forEach((m,i)=>{if(i!==DERBY_S13&&i!==DERBY_S23&&rs[i])jugados++;});
+  if(rd.d1?.signo)jugados+=2;
+  if(rd.d2?.signo)jugados+=2;
+  const total=36+36+4;
+  // jornada aproximada: la mas alta con resultado
+  let jornada=0;
+  PARTIDOS_BETIS.forEach((m,i)=>{if(rb[i]||((i===DERBY_B13)&&rd.d1?.signo)||((i===DERBY_B23)&&rd.d2?.signo))jornada=Math.max(jornada,m.j);});
+  PARTIDOS_SEVILLA.forEach((m,i)=>{if(rs[i]||((i===DERBY_S13)&&rd.d1?.signo)||((i===DERBY_S23)&&rd.d2?.signo))jornada=Math.max(jornada,m.j);});
+  return {jugados,total,jornada,pct:Math.round(jugados/total*100)};
+}
+function getRacha(uid){
+  const p=S.participants[uid];
+  if(!p) return {actual:0,mejor:0};
+  // recorre todos los partidos con resultado en orden cronologico
+  const eventos=[];
+  PARTIDOS_BETIS.forEach((m,i)=>{
+    if(i===DERBY_B13||i===DERBY_B23) return;
+    const rv=S.results.betis?.[i];
+    if(rv) eventos.push({j:m.j,fecha:m.fecha,ok:p.betis?.[i]===rv});
+  });
+  PARTIDOS_SEVILLA.forEach((m,i)=>{
+    if(i===DERBY_S13||i===DERBY_S23) return;
+    const rv=S.results.sevilla?.[i];
+    if(rv) eventos.push({j:m.j,fecha:m.fecha,ok:p.sevilla?.[i]===rv});
+  });
+  ['d1','d2'].forEach((dk,n)=>{
+    const rd=S.results.derbis?.[dk];
+    if(rd?.signo) eventos.push({j:n===0?13:23,fecha:'',ok:p.derbis?.[dk]?.signo===rd.signo});
+  });
+  eventos.sort((a,b)=>a.j-b.j);
+  let actual=0,mejor=0,run=0;
+  eventos.forEach(e=>{
+    if(e.ok){run++;mejor=Math.max(mejor,run);} else run=0;
+  });
+  actual=run;
+  return {actual,mejor,total:eventos.length};
+}
+function getDuelo(){
+  const rank=getRank();
+  const bet=rank.filter(p=>p.equipo==='betis');
+  const sev=rank.filter(p=>p.equipo==='sevilla');
+  const media=arr=>arr.length?Math.round(arr.reduce((s,p)=>s+p.pts,0)/arr.length):0;
+  return {
+    betis:{n:bet.length,media:media(bet),mejor:bet[0]||null,total:bet.reduce((s,p)=>s+p.pts,0)},
+    sevilla:{n:sev.length,media:media(sev),mejor:sev[0]||null,total:sev.reduce((s,p)=>s+p.pts,0)},
+  };
+}
+function getVotos(equipo,i){
+  const votos={1:0,X:0,2:0};
+  const porEquipo={betis:{1:0,X:0,2:0},sevilla:{1:0,X:0,2:0}};
+  Object.values(S.participants).forEach(pp=>{
+    const vv=pp[equipo]?.[i];
+    if(!vv) return;
+    votos[vv]++;
+    if(pp.equipo==='betis') porEquipo.betis[vv]++;
+    else if(pp.equipo==='sevilla') porEquipo.sevilla[vv]++;
+  });
+  return {votos,porEquipo};
+}
+
+// ── RANKING ──
+function renderRank(){
+  const rank=getRank(),mx=rank[0]?.pts||1;
+  const n=Object.keys(S.participants).length;
+  const pot=Object.values(S.participants).filter(p=>S.payments?.[p.email]).length*(S.meta?.cuota||10);
+  const lastIdx=rank.length-1;
+  let h=`<div class="nav">
+    <button class="btn btn-sm btn-ghost" onclick="go('home')">← Volver</button>
+    <span class="nav-title">Clasificación</span>
+    <span class="count-pill">${rank.length} participantes</span></div>
+  <div class="sticky-tabs"><div class="tab-bar">
+    <button class="tab${rankTab==='rank'?' active':''}" onclick="setRankTab('rank')">🏆 Clasificación</button>
+    <button class="tab${rankTab==='pron'?' active':''}" onclick="setRankTab('pron')">📊 Pronósticos</button>
+    <button class="tab${rankTab==='invierno'?' active':''}" onclick="setRankTab('invierno')">❄️ Campeón Invierno</button>
+  </div></div>`;
+
+  if(rankTab==='pron'){app.innerHTML=h+buildPronosticos();return;}
+
+  if(rankTab==='invierno'){
+    h+=`<div class="card" style="padding:14px 16px">
+      <h3 style="margin-bottom:8px;color:var(--gold)">❄️ Campeón de Invierno</h3>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Líder tras la Jornada 19 · Premio: 10% del bote</p>`;
+    rank.forEach((p,i)=>{
+      h+=`<div class="rank-row"><span class="rank-num${i===0?' gold':''}">${i+1}</span>
+      <span class="rank-name ${p.equipo||''}" style="flex:1;font-weight:500">${p.nombre}</span>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:18px">${p.pts}</span></div>`;
+    });
+    h+=`</div>`;
+    app.innerHTML=h;
+    return;
+  }
+
+  if(pot>0){
+    const p1=Math.round(pot*.3),p2=Math.round(pot*.2),p3=Math.round(pot*.1),pi=Math.round(pot*.1);
+    h+=`<div class="card" style="margin-bottom:12px;background:rgba(245,158,11,.05);border-color:rgba(245,158,11,.2)">
+    <h3 style="margin-bottom:10px;color:var(--gold)">💰 Bote — ${pot}€ recaudados</h3>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;font-size:12px">
+      <div><div style="color:var(--text2)">🥇 1º (30%)</div><div style="font-size:18px;font-weight:700;color:var(--gold)">${p1}€</div></div>
+      <div><div style="color:var(--text2)">🥈 2º (20%)</div><div style="font-size:18px;font-weight:700;color:var(--silver)">${p2}€</div></div>
+      <div><div style="color:var(--text2)">🥉 3º (10%)</div><div style="font-size:18px;font-weight:700;color:var(--bronze)">${p3}€</div></div>
+      <div><div style="color:var(--text2)">❄️ Inv (10%)</div><div style="font-size:18px;font-weight:700;color:#93c5fd">${pi}€</div></div>
+    </div></div>`;
+  }
+
+  const prevPos={};
+  if(S.snapshot?.length) S.snapshot.forEach((e,i)=>{prevPos[e.uid]=i+1;});
+
+  if(!rank.length){h+='<div class="card" style="text-align:center;padding:28px"><p style="color:var(--text2)">Sin participantes aún.</p></div>';app.innerHTML=h;return;}
+  h+='<div>';
+  rank.forEach((p,i)=>{
+    const cls=i===0?'gold':i===1?'silver':i===2?'bronze':'';
+    const isLast=i===lastIdx&&rank.length>1;
+    let arrow='';
+    if(prevPos[p.uid]!==undefined){
+      const diff=prevPos[p.uid]-(i+1);
+      if(diff>0) arrow=`<span class="pos-change up">▲${diff}</span>`;
+      else if(diff<0) arrow=`<span class="pos-change down">▼${Math.abs(diff)}</span>`;
+      else arrow=`<span class="pos-change same">—</span>`;
+    }
+    const rc=getRacha(p.uid);
+    const rachaTag=rc.actual>=3?`<span class="tag" style="background:rgba(245,158,11,.15);color:var(--gold);margin-right:6px" title="Racha de aciertos">🔥${rc.actual}</span>`:'';
+    h+=`<div class="rank-row"><span class="rank-num ${cls}">${isLast?'💀':i+1}</span>
+    <div style="flex:1"><span class="rank-name ${p.equipo||''}">${p.nombre}</span>${rachaTag}
+    <div class="progress-bar"><div class="progress-fill" style="width:${Math.round(p.pts/mx*100)}%;${p.equipo?`background:var(--${p.equipo})`:''}"></div></div></div>
+    ${arrow}<span class="rank-pts">${p.pts}</span></div>`;
+  });
+  h+='</div>';
+  app.innerHTML=h;
+}
+function setRankTab(t){rankTab=t;renderRank();}
+
+function buildPronosticos(){
+  const n=Object.keys(S.participants).length;
+  if(n===0) return '<div class="card" style="text-align:center;padding:28px"><p style="color:var(--text2)">Sin participantes aún.</p></div>';
+  const bloque=(equipo,titulo,color)=>{
+    const partidos=equipo==='betis'?PARTIDOS_BETIS:PARTIDOS_SEVILLA;
+    const reales=S.results[equipo]||{};
+    let out=`<div class="card" style="padding:14px 16px">
+      <h3 style="margin-bottom:4px;color:var(--${color})">${titulo}</h3>
+      <p style="font-size:12px;color:var(--text2);margin-bottom:10px">Qué ha pronosticado el grupo en cada partido</p>`;
+    partidos.forEach((m,i)=>{
+      if(m.derby) return;
+      const {votos,porEquipo}=getVotos(equipo,i);
+      const tot=votos['1']+votos.X+votos['2'];
+      if(tot===0) return;
+      const pct=v=>Math.round(v/tot*100);
+      const rv=reales[i]||'';
+      const etiqueta={'1':'Gana '+m.local,'X':'Empate','2':'Gana '+m.visitante};
+      out+=`<div style="padding:8px 0;border-bottom:1px solid var(--border)">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px">
+          <span style="font-size:13px">${m.local} — ${m.visitante}</span>
+          <span style="font-size:11px;color:var(--text3)">J${m.j}${rv?` · resultado <b style="color:var(--text2)">${rv}</b>`:''}</span>
+        </div>
+        ${['1','X','2'].map(opt=>`<div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;font-size:12px">
+          <span style="width:96px;color:${rv===opt?'var(--text)':'var(--text3)'};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${etiqueta[opt]}</span>
+          <div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;display:flex">
+            <div style="width:${porEquipo.betis[opt]/tot*100}%;background:var(--betis)"></div>
+            <div style="width:${porEquipo.sevilla[opt]/tot*100}%;background:var(--sevilla)"></div>
+          </div>
+          <span style="width:52px;text-align:right;color:${rv===opt?'#15803d':'var(--text3)'};font-weight:${rv===opt?'700':'400'}">${pct(votos[opt])}% (${votos[opt]})</span>
+        </div>`).join('')}
+      </div>`;
+    });
+    out+='</div>';
+    return out;
+  };
+  let h=`<div class="card" style="padding:10px 14px;font-size:12px;color:var(--text2);display:flex;gap:14px;align-items:center;justify-content:center">
+    <span><span style="display:inline-block;width:10px;height:10px;background:var(--betis);border-radius:2px;vertical-align:middle"></span> voto bético</span>
+    <span><span style="display:inline-block;width:10px;height:10px;background:var(--sevilla);border-radius:2px;vertical-align:middle"></span> voto sevillista</span>
+  </div>`;
+  h+=bloque('betis','🟢 Partidos del Betis','betis');
+  h+=bloque('sevilla','🔴 Partidos del Sevilla','sevilla');
+  return h;
+}
+
+// ── ADMIN ──
+function renderAdmin(){
+  const rank=getRank();
+  if(!S.payments) S.payments={};
+  if(!S.meta) S.meta={cuota:10};
+  let h=`<div class="nav">
+    <button class="btn btn-sm btn-ghost" onclick="go('home')">← Salir</button>
+    <span class="nav-title">Admin <span class="admin-badge">ADMIN</span></span><span></span></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px">
+    <button class="btn btn-betis" onclick="go('admin_results')">📝 Resultados</button>
+    <button class="btn" onclick="go('ranking')">🏆 Ranking</button>
+    <button class="btn" onclick="go('admin_pagos')">💰 Pagos</button>
+    <button class="btn" onclick="fijarSnapshot()" title="Fijar ranking actual como referencia">📸 Fijar posiciones</button>
+  </div>
+  <div class="card" style="margin-bottom:18px;${isLocked()?'background:rgba(245,158,11,.05);border-color:rgba(245,158,11,.3)':''}">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+      <div>
+        <h3 style="margin-bottom:2px">${isLocked()?'🔒 Quinielas cerradas':'🔓 Quinielas abiertas'}</h3>
+        <p style="font-size:12px;color:var(--text2)">${isLocked()?'Periodo de pronósticos cerrado.':'Los participantes pueden crear y modificar su quiniela.'}</p>
+      </div>
+      <button class="btn btn-sm" onclick="toggleLock()">${isLocked()?'🔓 Abrir':'🔒 Cerrar quinielas'}</button>
+    </div>
+  </div>
+  <h2>Participantes (${rank.length})</h2><div style="margin-top:8px">`;
+  rank.forEach((p,i)=>{
+    const pagado=S.payments[p.uid]?true:false;
+    const bonus=parseInt(S.bonus?.[p.uid]||0);
+    h+=`<div class="rank-row"><span class="rank-num">${i+1}</span>
+    <div style="flex:1"><span style="font-weight:500">${p.nombre}</span><br>
+    <span style="font-size:12px;color:var(--text3)">${p.uid}</span></div>
+    <span class="tag ${pagado?'tag-green':'tag-amber'}" style="margin-right:8px">${pagado?'✓':'⏳'}</span>
+    <span class="rank-pts" style="font-size:17px">${p.pts}</span>
+    <button class="btn btn-sm" onclick="verQuiniela('${p.uid}')" style="margin-left:8px">👁</button>
+    <button class="btn btn-sm" onclick="editBonus('${p.uid}',${bonus})" style="margin-left:4px;${bonus!==0?'border-color:var(--gold);color:var(--gold)':''}">±${bonus}</button>
+    <button class="btn btn-sm btn-danger" onclick="borrar('${p.uid}')" style="margin-left:4px">🗑</button></div>`;
+  });
+  h+='</div>';app.innerHTML=h;
+}
+async function borrar(uid){if(!confirm('¿Borrar a '+S.participants[uid]?.nombre+'?'))return;delete S.participants[uid];try{await fetch('/api/participant',{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:uid})});}catch(e){}renderAdmin();}
+async function toggleLock(){
+  const next=!isLocked();
+  if(!confirm(next?'¿Cerrar las quinielas?':'¿Reabrir las quinielas?')) return;
+  S.meta.locked=next;
+  try{await fetch('/api/lock',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({locked:next})});}catch(e){}
+  renderAdmin();
+}
+function editBonus(uid,current){
+  const val=prompt(`Puntos extra/penalización para ${S.participants[uid]?.nombre}:`,current);
+  if(val===null) return;
+  const n=parseInt(val);
+  if(isNaN(n)){alert('Introduce un número.');return;}
+  if(!S.bonus) S.bonus={};
+  S.bonus[uid]=n;
+  setBonus(uid,n);
+  renderAdmin();
+}
+async function setBonus(uid,pts){try{await fetch('/api/bonus',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:uid,pts})});}catch(e){}}
+async function fijarSnapshot(){
+  if(!confirm('¿Fijar el ranking actual como referencia para las flechas?')) return;
+  const snap=getRank().map(p=>({uid:p.uid,nombre:p.nombre,pts:p.pts}));
+  try{
+    const res=await fetch('/api/snapshot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({snapshot:snap})});
+    if(res.ok){S.snapshot=snap;alert('✓ Ranking fijado.');}
+  }catch(e){}
+}
+
+// ── ADMIN VER QUINIELA ──
+function verQuiniela(uid){viewUid=uid;qtab='betis';RO=true;S.page='admin_ver';render();}
+function closeVer(){RO=false;viewUid=null;qtab='betis';go('admin');}
+function renderAdminVer(){
+  const p=S.participants[viewUid];
+  if(!p){closeVer();return;}
+  RO=true;
+  const d=calcPtsDetalle(viewUid);
+  const tabs=[{id:'betis',l:'🟢 Betis'},{id:'sevilla',l:'🔴 Sevilla'},{id:'derbis',l:'⚔️ Derbis'},{id:'pichi',l:'🥇 Pichichi'}];
+  let h=`<div class="nav">
+    <button class="btn btn-sm btn-ghost" onclick="closeVer()">← Admin</button>
+    <span class="nav-title">${p.nombre}</span>
+    <span class="admin-badge">SOLO LECTURA</span></div>
+  <div class="card" style="margin-bottom:12px;padding:10px 14px;font-size:13px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+      <span style="color:var(--text2)">${p.nombre}</span>
+      <b style="font-size:18px;font-family:'Bebas Neue',sans-serif">${d.total} pts</b>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:4px">
+      ${[['Betis',d.betis,'3pts'],['Sevilla',d.sevilla,'3pts'],['Derby 1',d.d1,'6+5pts'],['Derby 2',d.d2,'6+5pts'],['Pichichi',d.pichi,'10pts'],...(d.bonus?[['Bonus',d.bonus,'']]:[])]
+        .filter(([,v])=>v!==0)
+        .map(([l,v,sub])=>`<div style="background:var(--surface2);border-radius:6px;padding:5px 8px">
+          <div style="font-size:10px;color:var(--text3)">${l}</div>
+          <div style="font-size:15px;font-weight:700;font-family:'Bebas Neue',sans-serif">${v} pts</div>
+          <div style="font-size:10px;color:var(--text3)">${sub}</div>
+        </div>`).join('')}
+    </div>
+  </div>
+  <div class="sticky-tabs"><div class="tab-bar">
+  ${tabs.map(t=>`<button class="tab${qtab===t.id?' active':''}" onclick="setQtab('${t.id}')">${t.l}</button>`).join('')}
+  </div></div>`;
+  if(qtab==='betis') h+=buildPartidos('betis',p);
+  else if(qtab==='sevilla') h+=buildPartidos('sevilla',p);
+  else if(qtab==='derbis') h+=buildDerbis(p);
+  else if(qtab==='pichi') h+=buildPichi(p);
+  app.innerHTML=h;
+}
+
+// ── ADMIN PAGOS ──
+function renderAdminPagos(){
+  if(!S.meta) S.meta={cuota:10};
+  const rank=getRank();
+  const pagados=rank.filter(p=>S.payments[p.uid]);
+  const pendientes=rank.filter(p=>!S.payments[p.uid]);
+  const pot=pagados.length*S.meta.cuota;
+  let h=`<div class="nav">
+    <button class="btn btn-sm btn-ghost" onclick="go('admin')">← Admin</button>
+    <span class="nav-title">Control de pagos</span><span></span></div>
+  <div class="card" style="margin-bottom:12px;background:rgba(245,158,11,.05);border-color:rgba(245,158,11,.2)">
+    <h3 style="color:var(--gold);margin-bottom:10px">💰 Resumen económico</h3>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:14px">
+      <div><span style="color:var(--text2)">Cuota</span><br><b style="font-size:18px">${S.meta.cuota}€</b>
+        <input type="number" min="1" max="200" value="${S.meta.cuota}" onchange="setCuota(this.value)" style="width:70px;margin-left:8px;display:inline-block;vertical-align:middle">
+      </div>
+      <div><span style="color:var(--text2)">Pagados</span><br><b style="font-size:18px;color:#15803d">${pagados.length}/${rank.length}</b></div>
+      <div><span style="color:var(--text2)">Recaudado</span><br><b style="font-size:18px;color:var(--gold)">${pot}€</b></div>
+    </div>
+  </div>`;
+  if(pendientes.length>0){
+    h+=`<div class="card" style="margin-bottom:12px"><h3 style="margin-bottom:10px;color:#b91c1c">⏳ Pendientes (${pendientes.length})</h3>`;
+    pendientes.forEach(p=>{
+      h+=`<div class="status-row"><div><span style="font-weight:500">${p.nombre}</span><br><span style="font-size:12px;color:var(--text3)">${p.uid}</span></div>
+        <button class="btn btn-sm" style="background:rgba(34,197,94,.15);border-color:#16a34a;color:#15803d" onclick="marcarPago('${p.uid}',true)">✓ Pagado</button></div>`;
+    });
+    h+=`</div>`;
+  }
+  if(pagados.length>0){
+    h+=`<div class="card"><h3 style="margin-bottom:10px;color:#15803d">✓ Pagados (${pagados.length})</h3>`;
+    pagados.forEach(p=>{
+      h+=`<div class="status-row"><div><span style="font-weight:500">${p.nombre}</span></div>
+        <button class="btn btn-sm btn-danger" onclick="marcarPago('${p.uid}',false)">✗</button></div>`;
+    });
+    h+=`</div>`;
+  }
+  app.innerHTML=h;
+}
+async function marcarPago(uid,paid){
+  if(!S.payments) S.payments={};
+  if(paid){const now=new Date();const fecha=now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear();S.payments[uid]={pagado:true,fecha};}
+  else delete S.payments[uid];
+  try{await fetch('/api/payment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:uid,paid,fecha:S.payments[uid]?.fecha})});}catch(e){}
+  renderAdminPagos();
+}
+async function setCuota(v){
+  S.meta.cuota=parseInt(v)||10;
+  try{await fetch('/api/meta',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({cuota:S.meta.cuota})});}catch(e){}
+  renderAdminPagos();
+}
+
+// ── ADMIN: PLANTILLAS ──
+function buildJugadores(){
+  if(!S.jugadores) S.jugadores={betis:[],sevilla:[]};
+  const bloque=(equipo,titulo,color)=>{
+    const lista=S.jugadores[equipo]||[];
+    return `<div class="card">
+      <h3 style="margin-bottom:4px;color:var(--${color})">${titulo}</h3>
+      <p style="font-size:12px;color:var(--text2);margin-bottom:10px">Estos jugadores saldrán en el desplegable del pichichi.</p>
+      <div style="display:flex;gap:6px;margin-bottom:10px">
+        <input id="nj_${equipo}" placeholder="Nombre del jugador" onkeydown="if(event.key==='Enter')addJugador('${equipo}')"/>
+        <button class="btn btn-${color}" onclick="addJugador('${equipo}')">+ Añadir</button>
+      </div>
+      ${lista.length===0?'<p style="font-size:13px;color:var(--text3)">Sin jugadores. Añade los de la plantilla.</p>':
+        lista.map((j,i)=>`<div class="status-row">
+          <span style="font-size:14px">${j}</span>
+          <button class="btn btn-sm btn-danger" onclick="delJugador('${equipo}',${i})">🗑</button>
+        </div>`).join('')}
+      <p style="font-size:12px;color:var(--text3);margin-top:8px">${lista.length} jugador${lista.length!==1?'es':''}</p>
+    </div>`;
+  };
+  return bloque('betis','🟢 Plantilla Real Betis','betis')
+       + bloque('sevilla','🔴 Plantilla Sevilla F.C.','sevilla')
+       + `<button class="btn btn-betis" style="width:100%;margin-top:4px" onclick="saveR()">💾 Guardar</button><div id="rsm"></div>`;
+}
+function addJugador(equipo){
+  const el=document.getElementById('nj_'+equipo);
+  const v=(el?.value||'').trim();
+  if(!v) return;
+  if(!S.jugadores) S.jugadores={betis:[],sevilla:[]};
+  if(!S.jugadores[equipo]) S.jugadores[equipo]=[];
+  if(S.jugadores[equipo].some(j=>j.toLowerCase()===v.toLowerCase())){alert('Ese jugador ya está en la lista.');return;}
+  S.jugadores[equipo].push(v);
+  S.jugadores[equipo].sort((a,b)=>a.localeCompare(b,'es'));
+  S.results.jugadores=S.jugadores;
+  renderRtab(4);
+}
+function delJugador(equipo,i){
+  if(!confirm('¿Quitar a '+S.jugadores[equipo][i]+' de la lista?')) return;
+  S.jugadores[equipo].splice(i,1);
+  S.results.jugadores=S.jugadores;
+  renderRtab(4);
+}
+
+// ── ADMIN RESULTADOS ──
+let rt=0;
+function renderAdminRes(){
+  const tabs=['🟢 Betis','🔴 Sevilla','⚔️ Derbis','🥇 Pichichi','👥 Jugadores'];
+  let h=`<div class="nav">
+    <button class="btn btn-sm btn-ghost" onclick="go('admin')">← Admin</button>
+    <span class="nav-title">Resultados reales</span><span></span></div>
+  <div class="sticky-tabs"><div class="tab-bar">
+  ${tabs.map((t,i)=>`<button class="tab${rt===i?' active':''}" onclick="setRt(${i})">${t}</button>`).join('')}
+  </div></div><div id="rc"></div>`;
+  app.innerHTML=h;
+  renderRtab(rt);
+}
+function setRt(i){rt=i;document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('active',j===i));renderRtab(i);}
+function renderRtab(i){
+  const c=document.getElementById('rc');
+  if(!c) return;
+  if(i===0) c.innerHTML=buildPartidos('betis',null,true);
+  else if(i===1) c.innerHTML=buildPartidos('sevilla',null,true);
+  else if(i===2) c.innerHTML=buildDerbis({derbis:S.results.derbis||{}},true);
+  else if(i===3) c.innerHTML=buildPichi({pich_betis:S.results.pich_betis||'',pich_sevilla:S.results.pich_sevilla||''},true);
+  else if(i===4) c.innerHTML=buildJugadores();
+}
+async function saveR(){
+  if(S.jugadores) S.results.jugadores=S.jugadores;
+  const m=document.getElementById('rsm');
+  if(m) m.innerHTML='<p class="msg-ok" style="margin-top:8px;opacity:.6">Guardando...</p>';
+  try{
+    const res=await fetch('/api/results',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({data:S.results})});
+    if(m) m.innerHTML=res.ok?'<p class="msg-ok" style="margin-top:8px">✓ Guardado</p>':'<p class="msg-err" style="margin-top:8px">Error</p>';
+  }catch(e){if(m) m.innerHTML='<p class="msg-err" style="margin-top:8px">Error de conexión</p>';}
+}
+
+async function init(){
+  app.innerHTML='<div style="text-align:center;padding:60px 0;color:var(--text2)">Cargando...</div>';
+  await ld();
+  render();
+}
+init();
+</script>
+</body>
+</html>
