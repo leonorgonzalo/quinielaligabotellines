@@ -217,9 +217,14 @@ const DERBY_B23=22; // Betis jornada 23 (Betis-Sevilla)
 const DERBY_S13=12; // Sevilla jornada 13
 const DERBY_S23=22; // Sevilla jornada 23
 
+const PLANTILLA_DEFAULT={
+  betis:['POR: Diego Conde','POR: Manu González','POR: Álvaro Valles','DEF: Carlos De Roa','DEF: Fran García','DEF: Héctor Bellerín','DEF: Junior Firpo','DEF: Llorente','DEF: Marc Bartra','DEF: Natan','DEF: Nobel Mendy','DEF: Pablo Busto','DEF: Valentín Gómez','DEF: Ángel Ortiz','MED: Facundo Bernal','MED: Giovani Lo Celso','MED: Iker Losada','MED: Isco','MED: Iván Corralejo','MED: Marc Roca','MED: Nelson Deossa','MED: Pablo Fornals','MED: Álvaro Fidalgo','DEL: Abde Ezzalzouli','DEL: Aitor Ruibal','DEL: Antony','DEL: Chimy Ávila','DEL: Cucho Hernández','DEL: Gonzalo Petit','DEL: Morante','DEL: Pablo García','DEL: Rodrigo Riquelme'],
+  sevilla:['POR: Alberto Flores','POR: Fran González','POR: Loren Luchino','POR: Odisseas Vlachodimos','POR: Rafa Romero','DEF: Adrià Pedrosa','DEF: Andrés Castrín','DEF: Arouna Sangante','DEF: Federico Gattoni','DEF: Fábio Cardoso','DEF: Gabriel Suazo','DEF: Iker Ortín','DEF: José Ángel Carmona','DEF: Juan Antonio Iglesias','DEF: Juanlu Sánchez','DEF: Kike Salas','DEF: Marcão','MED: Djibril Sow','MED: Eduardo Altozano','MED: Joan Jordán','MED: Jon Guridi','MED: Julio Díaz','MED: Lucien Agoumé','MED: Manuel Bueno','MED: Nicolás Guillén','MED: Oso','MED: Patrik Mercado','DEL: Alex Costa','DEL: Alfon González','DEL: Chidera Ejuke','DEL: Gerard Fernández "Peque"','DEL: Isaac Romero','DEL: Miguel Ángel Sierra','DEL: Rafa Mir','DEL: Rubén Vargas']
+};
+
 const ADMIN_PASS='derbi2027';
 
-let S={page:'home',user:null,participants:{},results:{},payments:{},bonus:{},snapshot:[],jugadores:{betis:[],sevilla:[]},meta:{cuota:10,locked:false}};
+let S={page:'home',user:null,participants:{},results:{},payments:{},bonus:{},snapshot:[],jugadores:{betis:[...PLANTILLA_DEFAULT.betis],sevilla:[...PLANTILLA_DEFAULT.sevilla]},meta:{cuota:10,locked:false}};
 let RO=false,viewUid=null,qtab='betis',rankTab='rank';
 
 function isLocked(){return !!(S.meta&&S.meta.locked);}
@@ -234,7 +239,11 @@ async function ld(){
       S.payments=d.payments||{};
       S.bonus=d.bonus||{};
       S.snapshot=d.snapshot||[];
-      S.jugadores=d.results?.jugadores||{betis:[],sevilla:[]};
+      const jg=d.results?.jugadores||{};
+      S.jugadores={
+        betis:(jg.betis&&jg.betis.length)?jg.betis:[...PLANTILLA_DEFAULT.betis],
+        sevilla:(jg.sevilla&&jg.sevilla.length)?jg.sevilla:[...PLANTILLA_DEFAULT.sevilla],
+      };
       S.meta=d.meta||{cuota:10,locked:false};
     }
   }catch(e){console.error('Error loading:',e);}
@@ -599,9 +608,10 @@ function buildDerbis(p,isAdmin){
         </div>
         <div class="form-group">
           <label>Minuto 1er gol — hasta +5 pts</label>
-          <input type="number" min="1" max="90" step="1" inputmode="numeric" placeholder="Ej: 28" value="${pd.minuto||''}"
-            oninput="this.value=this.value.replace(/[^0-9]/g,'');${ro?'':fn+"'minuto',this.value)"}"
+          <input type="number" min="0" max="90" step="1" inputmode="numeric" placeholder="Ej: 28" value="${pd.minuto||''}"
+            oninput="this.value=clampMinuto(this.value);${ro?'':fn+"'minuto',this.value)"}"
             onkeydown="if(['.',',','e','E','+','-'].includes(event.key))event.preventDefault()"
+            onblur="this.value=clampMinuto(this.value);${ro?'':fn+"'minuto',this.value)"}"
             ${ro?'readonly':''} style="max-width:100px"/>
           <p style="font-size:11px;color:var(--text3);margin-top:4px">Sin pasarse. Minuto 45 si es en descuento 1ª parte, 90 si es en descuento 2ª.</p>
         </div>
@@ -612,16 +622,25 @@ function buildDerbis(p,isAdmin){
   return h;
 }
 
+function clampMinuto(v){
+  const s=String(v).replace(/[^0-9]/g,'');
+  if(s==='') return '';
+  let n=parseInt(s,10);
+  if(isNaN(n)) return '';
+  if(n>90) n=90;
+  if(n<0) n=0;
+  return String(n);
+}
 function setDerby(key,campo,val){
   if(!S.participants[S.user].derbis) S.participants[S.user].derbis={};
   if(!S.participants[S.user].derbis[key]) S.participants[S.user].derbis[key]={};
-  S.participants[S.user].derbis[key][campo]=val;
+  S.participants[S.user].derbis[key][campo]=campo==='minuto'?clampMinuto(val):val;
   if(campo==='signo') renderQ();
 }
 function setAdminDerby(key,campo,val){
   if(!S.results.derbis) S.results.derbis={};
   if(!S.results.derbis[key]) S.results.derbis[key]={};
-  S.results.derbis[key][campo]=val;
+  S.results.derbis[key][campo]=campo==='minuto'?clampMinuto(val):val;
   if(campo==='signo') renderAdminRes();
 }
 
@@ -1069,24 +1088,57 @@ function buildJugadores(){
   if(!S.jugadores) S.jugadores={betis:[],sevilla:[]};
   const bloque=(equipo,titulo,color)=>{
     const lista=S.jugadores[equipo]||[];
-    return `<div class="card">
-      <h3 style="margin-bottom:4px;color:var(--${color})">${titulo}</h3>
-      <p style="font-size:12px;color:var(--text2);margin-bottom:10px">Estos jugadores saldrán en el desplegable del pichichi.</p>
-      <div style="display:flex;gap:6px;margin-bottom:10px">
-        <input id="nj_${equipo}" placeholder="Nombre del jugador" onkeydown="if(event.key==='Enter')addJugador('${equipo}')"/>
-        <button class="btn btn-${color}" onclick="addJugador('${equipo}')">+ Añadir</button>
-      </div>
-      ${lista.length===0?'<p style="font-size:13px;color:var(--text3)">Sin jugadores. Añade los de la plantilla.</p>':
-        lista.map((j,i)=>`<div class="status-row">
+    const grupos={POR:[],DEF:[],MED:[],DEL:[],OTROS:[]};
+    lista.forEach((j,i)=>{
+      const pos=(j.split(':')[0]||'').trim().toUpperCase();
+      (grupos[pos]||grupos.OTROS).push({j,i});
+    });
+    const nombreGrupo={POR:'Porteros',DEF:'Defensas',MED:'Mediocampistas',DEL:'Delanteros',OTROS:'Otros'};
+    let filas='';
+    Object.keys(grupos).forEach(g=>{
+      if(!grupos[g].length) return;
+      filas+=`<div class="section-label">${nombreGrupo[g]}</div>`;
+      grupos[g].forEach(({j,i})=>{
+        filas+=`<div class="status-row">
           <span style="font-size:14px">${j}</span>
           <button class="btn btn-sm btn-danger" onclick="delJugador('${equipo}',${i})">🗑</button>
-        </div>`).join('')}
-      <p style="font-size:12px;color:var(--text3);margin-top:8px">${lista.length} jugador${lista.length!==1?'es':''}</p>
+        </div>`;
+      });
+    });
+    return `<div class="card">
+      <h3 style="margin-bottom:4px;color:var(--${color})">${titulo}</h3>
+      <p style="font-size:12px;color:var(--text2);margin-bottom:10px">Estos jugadores saldrán en el desplegable del pichichi. Formato <b>POS: Nombre</b> (POR, DEF, MED, DEL).</p>
+      <div style="display:flex;gap:6px;margin-bottom:10px">
+        <input id="nj_${equipo}" placeholder="Ej: DEL: Juan Pérez" onkeydown="if(event.key==='Enter')addJugador('${equipo}')"/>
+        <button class="btn btn-${color}" onclick="addJugador('${equipo}')">+ Añadir</button>
+      </div>
+      ${lista.length===0?'<p style="font-size:13px;color:var(--text3)">Sin jugadores.</p>':filas}
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+        <span style="font-size:12px;color:var(--text3)">${lista.length} jugador${lista.length!==1?'es':''}</span>
+        <button class="btn btn-sm btn-ghost" onclick="restaurarPlantilla('${equipo}')">↺ Restaurar plantilla</button>
+      </div>
     </div>`;
   };
   return bloque('betis','🟢 Plantilla Real Betis','betis')
        + bloque('sevilla','🔴 Plantilla Sevilla F.C.','sevilla')
        + `<button class="btn btn-betis" style="width:100%;margin-top:4px" onclick="saveR()">💾 Guardar</button><div id="rsm"></div>`;
+}
+const POS_ORDEN={'POR':0,'DEF':1,'MED':2,'DEL':3};
+function ordenarPlantilla(arr){
+  arr.sort((a,b)=>{
+    const pa=POS_ORDEN[(a.split(':')[0]||'').trim().toUpperCase()];
+    const pb=POS_ORDEN[(b.split(':')[0]||'').trim().toUpperCase()];
+    const oa=pa===undefined?9:pa, ob=pb===undefined?9:pb;
+    if(oa!==ob) return oa-ob;
+    return a.localeCompare(b,'es');
+  });
+  return arr;
+}
+function restaurarPlantilla(equipo){
+  if(!confirm('¿Restaurar la plantilla original? Se perderán los cambios que hayas hecho en esta lista.')) return;
+  S.jugadores[equipo]=[...PLANTILLA_DEFAULT[equipo]];
+  S.results.jugadores=S.jugadores;
+  renderRtab(4);
 }
 function addJugador(equipo){
   const el=document.getElementById('nj_'+equipo);
@@ -1096,7 +1148,7 @@ function addJugador(equipo){
   if(!S.jugadores[equipo]) S.jugadores[equipo]=[];
   if(S.jugadores[equipo].some(j=>j.toLowerCase()===v.toLowerCase())){alert('Ese jugador ya está en la lista.');return;}
   S.jugadores[equipo].push(v);
-  S.jugadores[equipo].sort((a,b)=>a.localeCompare(b,'es'));
+  ordenarPlantilla(S.jugadores[equipo]);
   S.results.jugadores=S.jugadores;
   renderRtab(4);
 }
