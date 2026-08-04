@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiniela Botellinera 2026-2027</title>
+<title>Quiniela Botellinera 2026-2027 · 144 Botellines</title>
+<link rel="icon" href="logo.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -78,7 +79,8 @@ label{display:block;font-size:11px;font-weight:600;color:var(--text2);margin-bot
 .derby-vs{color:var(--text3);font-weight:600}
 
 /* HERO */
-.hero{padding:20px 0 16px;margin-bottom:18px;border-bottom:1px solid var(--border)}
+.hero{padding:18px 0 16px;margin-bottom:18px;border-bottom:1px solid var(--border)}
+.hero-logo{display:block;max-width:190px;width:45%;height:auto;margin-bottom:12px}
 .hero-stripe{height:4px;background:linear-gradient(90deg,var(--sevilla) 50%,var(--betis) 50%);border-radius:2px;margin-bottom:16px}
 .hero-top{display:flex;align-items:flex-start;justify-content:space-between}
 .hero-sub{color:var(--text2);font-size:13px;margin-top:4px}
@@ -302,7 +304,8 @@ function renderHome(){
     <div class="hero-stripe"></div>
     <div class="hero-top">
       <div>
-        <h1>⚽ Quiniela Botellinera</h1>
+        <img src="logo.jpg" alt="144 Botellines" class="hero-logo"/>
+        <h1>Quiniela Botellinera</h1>
         <p class="hero-sub">Temporada 2026-2027 · Liga Española · ${n} participante${n!==1?'s':''}</p>
       </div>
       <button class="btn btn-sm btn-ghost" onclick="gotoAdmin()">🔐</button>
