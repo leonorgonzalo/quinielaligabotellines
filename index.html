@@ -301,7 +301,7 @@ function getRank(){
 
 // ── RENDER ──
 const app=document.getElementById('app');
-function render(){app.innerHTML='';({home:renderHome,register:renderReg,quiniela:renderQ,ranking:renderRank,admin:renderAdmin,admin_results:renderAdminRes,admin_pagos:renderAdminPagos,admin_ver:renderAdminVer}[S.page]||renderHome)();}
+function render(){app.innerHTML='';({home:renderHome,register:renderReg,quiniela:renderQ,ranking:renderRank,admin:renderAdmin,admin_results:renderAdminRes,admin_pagos:renderAdminPagos,admin_ver:renderAdminVer,bases:renderBases}[S.page]||renderHome)();}
 function go(p){RO=false;S.page=p;render();}
 
 // ── HOME ──
@@ -323,7 +323,8 @@ function renderHome(){
   <div style="display:flex;gap:8px;margin-bottom:22px">
     <button class="btn btn-betis" style="flex:1" onclick="go('register')">+ Mi quiniela</button>
     <button class="btn btn-sevilla" style="flex:1" onclick="go('ranking')">🏆 Clasificación</button>
-  </div>`;
+  </div>
+  <button class="btn" style="width:100%;margin-bottom:22px;justify-content:center" onclick="go('bases')">📜 Bases de la quiniela</button>`;
 
   // Progreso de temporada
   const prog=getProgreso();
@@ -384,17 +385,96 @@ function renderHome(){
   }
 
   h+=`<div class="divider"></div>
-  <div class="card" style="font-size:13px;color:var(--text2);line-height:2;padding:12px 16px">
+  <div class="card" style="font-size:13px;color:var(--text2);line-height:2;padding:12px 16px;cursor:pointer" onclick="go('bases')">
     <span style="font-weight:600;color:var(--text)">Puntuación: </span>
     Partidos <b>3 pts</b>/acierto · Derby signo <b>3 pts</b> + resultado exacto <b>+3 pts</b> + minuto 1er gol <b>+5 pts</b> · Pichichi <b>10 pts</b> c/u
   </div>
-  <div class="card" style="font-size:13px;line-height:2;padding:12px 16px;background:rgba(245,158,11,.05);border-color:rgba(245,158,11,.2)">
+  <div class="card" style="font-size:13px;line-height:2;padding:12px 16px;background:rgba(245,158,11,.05);border-color:rgba(245,158,11,.2);cursor:pointer" onclick="go('bases')">
     <span style="font-weight:600;color:var(--gold)">Premios: </span>
     <span style="color:var(--text2)">🥇 30% · 🥈 20% · 🥉 10% · ❄️ Campeón de invierno 10% · 🏛️ Asociación 30%</span>
-  </div>`;
+  </div>
+  <p style="text-align:center;font-size:13px;margin-top:-4px"><a href="#" onclick="go('bases');return false" style="color:var(--text2);text-decoration:none">Ver bases completas →</a></p>`;
   app.innerHTML=h;
 }
 function gotoAdmin(){const p=prompt('Contraseña:');if(p===ADMIN_PASS){S.page='admin';render();}else if(p!==null)alert('Contraseña incorrecta.');}
+
+// ── BASES ──
+function renderBases(){
+  const cuota=S.meta?.cuota||10;
+  const S_=(t)=>`<div class="section-label">${t}</div>`;
+  let h=`<div class="nav">
+    <button class="btn btn-sm btn-ghost" onclick="go('home')">← Inicio</button>
+    <span class="nav-title">Bases oficiales</span><span></span></div>
+
+  <div class="card" style="padding:0;overflow:hidden">
+    <div style="height:4px;background:linear-gradient(90deg,var(--sevilla) 50%,var(--betis) 50%)"></div>
+    <div style="padding:16px 18px">
+      <h2 style="margin-bottom:2px">📜 Quiniela Botellinera</h2>
+      <p style="font-size:13px;color:var(--text2)">Temporada 2026-2027 · Liga Española</p>
+    </div>
+  </div>
+
+  <div class="card" style="background:rgba(245,158,11,.06);border-color:rgba(245,158,11,.3)">
+    <h3 style="color:var(--gold);margin-bottom:8px">⚠️ Plazo y reglas de entrega</h3>
+    <ul style="font-size:14px;color:var(--text2);padding-left:18px;line-height:1.9">
+      <li>La quiniela se rellena completa <b>de una sola vez</b> antes del inicio de la temporada.</li>
+      <li>Puedes modificar tus pronósticos <b>cuantas veces quieras</b> hasta el inicio exacto del primer partido de la Jornada 1. Después el formulario se cierra y no se admite ningún cambio.</li>
+      <li><b>Rellenado completo obligatorio:</b> los 38 partidos de cada equipo, los derbis completos y los dos pichichis. Una quiniela incompleta queda <b>anulada</b> y no cuenta para el juego.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-bottom:10px">⚽ Sistema de puntuación</h3>
+
+    ${S_('Partidos normales (1X2)')}
+    <div class="status-row"><span style="font-size:14px">Acertar el signo (1, X o 2)</span><span class="tag tag-green">3 pts</span></div>
+    <p style="font-size:12px;color:var(--text3);padding:6px 0">En cada partido del Real Betis y del Sevilla F.C.</p>
+
+    ${S_('El Gran Derbi · Jornadas 13 y 23')}
+    <div class="status-row"><span style="font-size:14px">Acertar el signo (1X2)</span><span class="tag tag-green">3 pts</span></div>
+    <div class="status-row"><span style="font-size:14px">Acertar el resultado exacto <span style="color:var(--text3)">(ej. 2-1)</span></span><span class="tag tag-green">+3 pts</span></div>
+    <div class="status-row"><span style="font-size:14px">Minuto del primer gol <span style="color:var(--text3)">(el que más se acerque sin pasarse)</span></span><span class="tag tag-green">+5 pts</span></div>
+    <p style="font-size:12px;color:var(--text3);padding:6px 0">Máximo por derbi: <b style="color:var(--text2)">11 pts</b></p>
+
+    <div style="background:var(--surface2);border-radius:8px;padding:10px 12px;margin-top:8px">
+      <p style="font-size:12px;font-weight:600;margin-bottom:6px">Reglas del minuto del primer gol</p>
+      <ul style="font-size:12px;color:var(--text2);padding-left:16px;line-height:1.8">
+        <li>Gol en el descuento de la 1ª parte (ej. 45'+2) cuenta como <b>minuto 45</b>.</li>
+        <li>Gol en el descuento de la 2ª parte (ej. 90'+3) cuenta como <b>minuto 90</b>.</li>
+        <li>Si varios ponen el mismo minuto o están a la misma distancia sin pasarse, <b>todos</b> se llevan los +5 pts.</li>
+        <li><i>Ejemplo:</i> si el gol cae en el minuto 28, quien puso 27 gana; quien puso 29 se ha pasado y queda descartado.</li>
+      </ul>
+    </div>
+
+    ${S_('Máximos goleadores (pichichis)')}
+    <div class="status-row"><span style="font-size:14px">🟢 Pichichi del Real Betis en Liga</span><span class="tag tag-green">+10 pts</span></div>
+    <div class="status-row"><span style="font-size:14px">🔴 Pichichi del Sevilla F.C. en Liga</span><span class="tag tag-green">+10 pts</span></div>
+    <p style="font-size:12px;color:var(--text3);padding:6px 0">Se resuelve al final de la temporada.</p>
+  </div>
+
+  <div class="card" style="background:rgba(245,158,11,.06);border-color:rgba(245,158,11,.3)">
+    <h3 style="color:var(--gold);margin-bottom:4px">💰 Reparto del bote</h3>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:10px">Cuota actual: <b>${cuota}€</b> por participación</p>
+    <div class="status-row"><span style="font-size:14px">🥇 1º Clasificado <span style="color:var(--text3)">· Campeón general</span></span><b>30%</b></div>
+    <div class="status-row"><span style="font-size:14px">🥈 2º Clasificado</span><b>20%</b></div>
+    <div class="status-row"><span style="font-size:14px">🥉 3º Clasificado</span><b>10%</b></div>
+    <div class="status-row"><span style="font-size:14px">❄️ Campeón de Invierno <span style="color:var(--text3)">· líder tras la J19</span></span><b>10%</b></div>
+    <div class="status-row"><span style="font-size:14px">🏛️ Asociación</span><b>30% −1 part.</b></div>
+    <div class="status-row"><span style="font-size:14px">🐢 Último clasificado <span style="color:var(--text3)">· farolillo rojo</span></span><b>1 part.</b></div>
+    <p style="font-size:12px;color:var(--text3);padding-top:8px">El farolillo rojo recupera el importe de una participación, que sale del porcentaje asignado a la asociación.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-bottom:10px">📋 Qué hay que rellenar</h3>
+    <div class="status-row"><span style="font-size:14px">Signos 1X2 del Real Betis</span><span class="tag tag-betis">38 partidos</span></div>
+    <div class="status-row"><span style="font-size:14px">Signos 1X2 del Sevilla F.C.</span><span class="tag tag-sevilla">38 partidos</span></div>
+    <div class="status-row"><span style="font-size:14px">Resultado exacto y minuto del 1er gol</span><span class="tag tag-amber">2 derbis</span></div>
+    <div class="status-row"><span style="font-size:14px">Máximo goleador del Betis y del Sevilla</span><span class="tag tag-amber">2 pichichis</span></div>
+  </div>
+
+  <button class="btn btn-betis" style="width:100%;justify-content:center;margin-top:4px" onclick="go('register')">Ir a mi quiniela →</button>`;
+  app.innerHTML=h;
+}
 
 // ── REGISTER ──
 function renderReg(){
@@ -519,14 +599,14 @@ function buildPartidos(equipo,p,isAdmin){
       if(pending) return 'radio-btn pending';
       return `radio-btn sel ${color}`;
     };
+    const verStats=!isAdmin&&isLocked();
     const votos={1:0,X:0,2:0};
-    if(!isAdmin) Object.values(S.participants).forEach(pp=>{const vv=pp[equipo]?.[i];if(vv)votos[vv]++;});
+    if(verStats) Object.values(S.participants).forEach(pp=>{const vv=pp[equipo]?.[i];if(vv)votos[vv]++;});
     const total=votos[1]+votos.X+votos[2]||1;
     const pct=n=>Math.round(n/total*100);
-    const isEsLocal=m.local==='Sevilla F.C.'||m.local==='Real Betis';
-    h+=`<div class="match-row" onclick="toggleStats('ms_${equipo}_${i}')" style="cursor:pointer">
+    h+=`<div class="match-row" ${verStats?`onclick="toggleStats('ms_${equipo}_${i}')" style="cursor:pointer"`:''}>
       <div class="match-info">
-        <span class="match-name">${m.local} — ${m.visitante} <span style="font-size:10px;color:var(--text3)">▾</span></span>
+        <span class="match-name">${m.local} — ${m.visitante}${verStats?' <span style="font-size:10px;color:var(--text3)">▾</span>':''}</span>
         <span class="match-meta">J${m.j} · ${m.fecha}</span>
       </div>
       <div class="radio-group">
@@ -535,13 +615,13 @@ function buildPartidos(equipo,p,isAdmin){
         <button class="${cls('2')}" onclick="event.stopPropagation();${click('2')}" data-e="${equipo}" data-i="${i}" data-v="2">2</button>
       </div>
     </div>
-    <div class="match-stats" id="ms_${equipo}_${i}">
+    ${verStats?`<div class="match-stats" id="ms_${equipo}_${i}">
       ${['1','X','2'].map(opt=>`<div class="stat-bar-row">
         <span class="stat-lbl">${opt}</span>
         <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:${pct(votos[opt])}%;background:var(--${color})"></div></div>
         <span class="stat-count">${votos[opt]} (${pct(votos[opt])}%)</span>
       </div>`).join('')}
-    </div>`;
+    </div>`:''}`;
   });
   h+=`</div>`;
   if(isAdmin) h+=`<button class="btn btn-${color}" style="width:100%;margin-top:4px" onclick="saveR()">💾 Guardar</button><div id="rsm"></div>`;
@@ -886,6 +966,11 @@ function setRankTab(t){rankTab=t;renderRank();}
 
 function buildPronosticos(){
   const n=Object.keys(S.participants).length;
+  if(!isLocked()) return `<div class="card" style="text-align:center;padding:28px">
+    <div style="font-size:32px;margin-bottom:8px">🔒</div>
+    <p style="color:var(--text2);font-size:14px">Los pronósticos del grupo se muestran cuando se cierren las quinielas.</p>
+    <p style="color:var(--text3);font-size:12px;margin-top:6px">Así nadie puede copiar antes de tiempo.</p>
+  </div>`;
   if(n===0) return '<div class="card" style="text-align:center;padding:28px"><p style="color:var(--text2)">Sin participantes aún.</p></div>';
   const bloque=(equipo,titulo,color)=>{
     const partidos=equipo==='betis'?PARTIDOS_BETIS:PARTIDOS_SEVILLA;
